@@ -6,13 +6,4 @@ namespace ShopDev.DAL.Repositories;
 public class SettingRepository : RepositoryBase<Setting>
 {
     public SettingRepository(Database db) : base(db) { }
-
-    protected override TableSchema TableSchema { get; } = new TableSchema("Settings", new()
-    {
-        new ColumnSchema(DBType.Char, 36, "ID") { IsPrimary = true },
-        new ColumnSchema(DBType.Varchar, 64, "SettingKey"),
-        new ColumnSchema(DBType.Text, "DisplayName"),
-        new ColumnSchema(DBType.Text, "Value") { CanBeNull = true },
-        new ColumnSchema(DBType.Varchar, 16, "DisplayType")
-    });
 }

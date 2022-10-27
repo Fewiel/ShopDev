@@ -21,26 +21,4 @@ public class User : IDBIdentifier
     public DateTimeOffset AbsenceDate { get; set; }
     public string? AbsenceReason { get; set; }
     public string? AdminNote { get; set; }
-
-    public object? GetFor(ColumnSchema col)
-    {
-        switch (col.Name)
-        {
-            case "ID": return ID;
-            case "Email": return Email;
-            case "Username": return Username;
-            case "Name": return Name;
-            case "SlackID": return SlackID;
-            case "Password": return Password;
-            case "SSHPublicKey": return SSHPublicKey;
-            case "Active": return Active;
-            case "LastUsed": return LastUsed.UtcDateTime;
-            case "ExpirationDate": return ExpirationDate.UtcDateTime;
-            case "RoleID": return RoleID;
-            case "AbsenceDate": return AbsenceDate.UtcDateTime;
-            case "AbsenceReason": return AbsenceReason;
-            case "AdminNote": return AdminNote;
-            default: return null;
-        }
-    }
 }
