@@ -9,7 +9,7 @@ public class SettingRepository : RepositoryBase<Setting>
 
     protected override TableSchema TableSchema { get; } = new TableSchema("Settings", new()
     {
-        new ColumnSchema(DBType.Binary, "ID") { IsPrimary = true },
+        new ColumnSchema(DBType.Char, 36, "ID") { IsPrimary = true },
         new ColumnSchema(DBType.Varchar, 64, "SettingKey"),
         new ColumnSchema(DBType.Text, "DisplayName"),
         new ColumnSchema(DBType.Text, "Value"),

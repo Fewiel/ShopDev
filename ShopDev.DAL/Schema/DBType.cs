@@ -8,5 +8,7 @@ public enum DBType
     Longtext,
     Tinyint,
     Int,
-    Bigint
+    Bigint,
+    Char,
+    DateTime
 }

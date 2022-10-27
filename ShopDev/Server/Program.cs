@@ -1,8 +1,5 @@
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using ShopDev.DAL.Models;
+using static Org.BouncyCastle.Math.EC.ECCurve;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+#if DEBUG
+var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#;");
+#endif
+
+database.ConfigureMigrate(builder.Services);
 
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>();
 
@@ -36,6 +39,8 @@ builder.Services.AddRazorPages();
 //builder.Services.AddControllers();
 
 var app = builder.Build();
+
+database.Migrate(app.Services);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

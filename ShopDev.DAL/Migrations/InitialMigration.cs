@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using ShopDev.DAL.Models;
 
 namespace ShopDev.DAL.Migrations;
 
@@ -10,20 +11,18 @@ public class InitialMigration : Migration
         Delete.Table("Settings");
     }
 
-
-    //    case "ID": return ID;
-    //case "Key": return Key;
-    //case "DisplayName": return DisplayName;
-    //case "Value": return Value;
-    //case "DisplayType": return DisplayType;
-    //default: return null;
-
     public override void Up()
     {
         Create.Table("Settings")
-            .WithColumn("ID").AsBinary().PrimaryKey().Identity()
+            .WithColumn("ID").AsGuid().PrimaryKey()
             .WithColumn("DisplayName").AsString()
             .WithColumn("Value").AsString()
             .WithColumn("DisplayType").AsString();
+
+        Create.Table("Logs")
+            .WithColumn("ID").AsGuid().PrimaryKey()
+            .WithColumn("Source").AsString()
+            .WithColumn("Message").AsString()
+            .WithColumn("Timestamp").AsDateTime();
     }
 }
