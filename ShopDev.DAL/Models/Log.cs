@@ -6,7 +6,7 @@ namespace ShopDev.DAL.Models;
 
 public class Log : IDBIdentifier
 {
-    public Guid ID { get; set; }
+    public Guid Id { get; set; }
     public string? Source { get; set; }
     public string? Message { get; set; }
     public DateTimeOffset Timestamp { get; set; }

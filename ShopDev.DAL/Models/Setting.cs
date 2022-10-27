@@ -5,7 +5,7 @@ namespace ShopDev.DAL.Models;
 
 public class Setting : IDBIdentifier
 {
-    public Guid ID { get; set; }
+    public Guid Id { get; set; }
     public string? Key { get; set; }
     public string? DisplayName { get; set; }
     public string? Value { get; set; }

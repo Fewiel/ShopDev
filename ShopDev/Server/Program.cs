@@ -1,5 +1,5 @@
 using ShopDev.DAL.Models;
-using static Org.BouncyCastle.Math.EC.ECCurve;
+using ShopDev.DAL.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +9,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 #if DEBUG
-var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#;");
+var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#; convert zero datetime=True;");
 #endif
 
 database.ConfigureMigrate(builder.Services);
+database.ConfigureRepositories(builder.Services);
 
 //builder.Services.AddIdentity<IdentityUser, IdentityRole>();
 

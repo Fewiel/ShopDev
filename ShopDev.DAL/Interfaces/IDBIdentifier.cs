@@ -4,5 +4,5 @@ namespace ShopDev.DAL.Interfaces;
 
 public interface IDBIdentifier
 {
-    Guid ID { get; }
+    Guid Id { get; }
 }

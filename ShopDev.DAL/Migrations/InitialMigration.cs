@@ -14,19 +14,20 @@ public class InitialMigration : Migration
     public override void Up()
     {
         Create.Table("Settings")
-            .WithColumn("ID").AsGuid().PrimaryKey()
+            .WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("Key").AsString()
             .WithColumn("DisplayName").AsString()
             .WithColumn("Value").AsString().Nullable()
             .WithColumn("DisplayType").AsString();
 
         Create.Table("Logs")
-            .WithColumn("ID").AsGuid().PrimaryKey()
+            .WithColumn("Id").AsGuid().PrimaryKey()
             .WithColumn("Source").AsString()
             .WithColumn("Message").AsString()
             .WithColumn("Timestamp").AsDateTime();
 
         Create.Table("Users")
-            .WithColumn("ID").AsGuid().PrimaryKey()
+            .WithColumn("Id").AsGuid().PrimaryKey()
             .WithColumn("Email").AsString()
             .WithColumn("Username").AsString()
             .WithColumn("Name").AsString().Nullable()

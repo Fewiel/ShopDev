@@ -1,13 +1,10 @@
-﻿using Google.Protobuf.WellKnownTypes;
-using Google.Protobuf;
-using ShopDev.DAL.Interfaces;
-using ShopDev.DAL.Schema;
+﻿using ShopDev.DAL.Interfaces;
 
 namespace ShopDev.DAL.Models;
 
 public class User : IDBIdentifier
 {
-    public Guid ID { get; set; }
+    public Guid Id { get; set; }
     public string? Email { get; set; }
     public string? Username { get; set; }
     public string? Name { get; set; }
@@ -15,10 +12,10 @@ public class User : IDBIdentifier
     public string? Password { get; set; }
     public string? SSHPublicKey { get; set; }
     public bool Active { get; set; }
-    public DateTimeOffset LastUsed { get; set; }
-    public DateTimeOffset ExpirationDate { get; set; }
+    public DateTime LastUsed { get; set; }
+    public DateTime ExpirationDate { get; set; }
     public Guid RoleID { get; set; }
-    public DateTimeOffset AbsenceDate { get; set; }
+    public DateTime AbsenceDate { get; set; }
     public string? AbsenceReason { get; set; }
     public string? AdminNote { get; set; }
 }
