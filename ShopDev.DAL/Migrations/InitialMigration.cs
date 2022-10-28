@@ -41,5 +41,11 @@ public class InitialMigration : Migration
             .WithColumn("AbsenceDate").AsDateTime().Nullable()
             .WithColumn("AbsenceReason").AsString().Nullable()
             .WithColumn("AdminNote").AsString().Nullable();
+
+        Create.Table("Tokens")
+            .WithColumn("Id").AsGuid().PrimaryKey()
+            .WithColumn("UserID").AsGuid().Indexed()
+            .WithColumn("ExpireTime").AsDateTime()            
+            .WithColumn("Type").AsInt16();
     }
 }

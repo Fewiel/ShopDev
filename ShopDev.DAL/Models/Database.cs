@@ -3,7 +3,6 @@ using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
 using ShopDev.DAL.Migrations;
 using ShopDev.DAL.Repositories;
-using System;
 
 namespace ShopDev.DAL.Models;
 
@@ -53,5 +52,6 @@ public class Database
         sc.AddSingleton(new LogRepository(this));
         sc.AddSingleton(new SettingRepository(this));
         sc.AddSingleton(new UserRepository(this));
+        sc.AddSingleton(new TokenRepository(this));
     }
 }
