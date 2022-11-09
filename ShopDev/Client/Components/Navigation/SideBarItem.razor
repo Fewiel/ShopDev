@@ -1,0 +1,15 @@
+﻿<li class="sidebar-item">
+    <NavLink class="sidebar-link waves-effect waves-dark sidebar-link"
+       href="@HRef">
+        <i class="@Icon"></i><span class="hide-menu">@Text</span>
+    </NavLink>
+</li>
+
+@code{
+    [Parameter]
+    public string? Text { get; set; }
+    [Parameter]
+    public string? Icon { get; set; }
+    [Parameter]
+    public string? HRef { get; set; }
+}

@@ -1,0 +1,19 @@
+﻿@page "/"
+@inject NavigationManager NavManager
+@inject AppState State
+
+@code {
+    protected override Task OnInitializedAsync()
+    {
+        if (State.LoggedIn)
+        {
+            NavManager.NavigateTo("/Home");
+        }
+        else 
+        {
+            NavManager.NavigateTo("/Login");
+        }
+
+        return Task.CompletedTask;
+    }
+}

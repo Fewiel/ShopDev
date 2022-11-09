@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopDev.Client", "ShopDev\C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopDev.DAL", "ShopDev.DAL\ShopDev.DAL.csproj", "{31B2C44A-56ED-4015-9DB6-2F5948FF48E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopDev.APIModels", "ShopDev.APIModels\ShopDev.APIModels.csproj", "{DDFD6B40-80F1-40B9-9682-74637577E459}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopDev.APIModels", "ShopDev.APIModels\ShopDev.APIModels.csproj", "{DDFD6B40-80F1-40B9-9682-74637577E459}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

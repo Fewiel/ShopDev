@@ -1,0 +1,31 @@
+﻿<li class="sidebar-item">
+    <div onclick="@OnClick">
+        <a class="sidebar-link has-arrow waves-effect waves-dark">
+            <i class="@Icon"></i>
+            <span class="hide-menu">@Text</span>
+        </a>
+    </div>
+    @if (!IsCollapsed)
+    {
+        <ul class="first-level">
+            @ChildContent
+        </ul>
+    }
+</li>
+
+@code {
+    private bool IsCollapsed = true;
+
+    [Parameter]
+    public string? Text { get; set; }
+    [Parameter]
+    public string? Icon { get; set; }
+    [Parameter]
+    public RenderFragment? ChildContent { get; set; }
+
+    private void OnClick()
+    {
+        IsCollapsed = !IsCollapsed;
+        StateHasChanged();
+    }
+}

@@ -1,39 +1,33 @@
-﻿<div class="top-row ps-3 navbar navbar-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="">ShopDev</a>
-        <button title="Navigation menu" class="navbar-toggler" @onclick="ToggleNavMenu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+﻿    <!-- ============================================================== -->
+<!-- Left Sidebar - style you can find in sidebar.scss  -->
+<!-- ============================================================== -->
+<aside class="left-sidebar" data-sidebarbg="skin5">
+    <!-- Sidebar scroll-->
+    <div class="scroll-sidebar">
+        <!-- Sidebar navigation-->
+        <nav class="sidebar-nav">
+            <ul id="sidebarnav" class="pt-4">                
+                <SideBarItem Text="Dashboard" Icon="bi bi-house" HRef="Home" />
+                <SideBarItem Text="Environments" Icon="bi bi-shop" HRef="Counter" />
+                <SideBarItem Text="Docker" Icon="bi bi-box-seam" HRef="#" />
+                <SideBarItem Text="PhpMyAdmin" Icon="bi bi-filetype-php" HRef="#" />
+                
+                <CollapsibleSideBarItem Text="Knowledge" Icon="bi bi-book">
+                    <SideBarItem Text="Payment Interfaces" Icon="bi bi-wallet" HRef="#" />
+                    <SideBarItem Text="ShopDev Dokumentation" Icon="bi bi-question-circle" HRef="#" />
+                </CollapsibleSideBarItem>
+
+                <CollapsibleSideBarItem Text="Administration" Icon="bi bi-wrench-adjustable-circle">
+                    <SideBarItem Text="User Management" Icon="bi bi-people" HRef="#" />
+                    <SideBarItem Text="Manage Roles" Icon="bi bi-person-badge" HRef="#" />
+                    <SideBarItem Text="Manage Composer Files" Icon="bi bi-file-earmark-code" HRef="#" />
+                    <SideBarItem Text="Manege Templates" Icon="bi bi-diagram-3" HRef="#" />
+                    <SideBarItem Text="Settings" Icon="bi bi-tools" HRef="#" />
+                    <SideBarItem Text="Logs" Icon="bi bi-file-earmark-text" HRef="#" />
+                </CollapsibleSideBarItem>
+            </ul>
+        </nav>
+        <!-- End Sidebar navigation -->
     </div>
-</div>
-
-<div class="@NavMenuCssClass" @onclick="ToggleNavMenu">
-    <nav class="flex-column">
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Home
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="counter">
-                <span class="oi oi-plus" aria-hidden="true"></span> Counter
-            </NavLink>
-        </div>
-        <div class="nav-item px-3">
-            <NavLink class="nav-link" href="fetchdata">
-                <span class="oi oi-list-rich" aria-hidden="true"></span> Fetch data
-            </NavLink>
-        </div>
-    </nav>
-</div>
-
-@code {
-    private bool collapseNavMenu = true;
-
-    private string? NavMenuCssClass => collapseNavMenu ? "collapse" : null;
-
-    private void ToggleNavMenu()
-    {
-        collapseNavMenu = !collapseNavMenu;
-    }
-}
+    <!-- End Sidebar scroll-->
+</aside>
