@@ -1,5 +1,9 @@
 ﻿@layout FormOnlyLayout
 @page "/Login"
+@inject HttpClient Http
+@inject AppState State
+@inject NavigationManager Nav
+@inject ILocalStorageService Storage
 
 <div id="loginform">
     <div class="text-center pt-3 pb-3">
@@ -9,9 +13,7 @@
     </div>
 
     <!-- Form -->
-    <form class="form-horizontal mt-3"
-          id="loginform"
-          action="index.html">
+    <div class="form-horizontal mt-3">
         <div class="row pb-4">
             <div class="col-12">
                 <div class="input-group mb-3">
@@ -23,9 +25,8 @@
                     <input type="text"
                            class="form-control form-control-lg"
                            placeholder="Username"
-                           aria-label="Username"
-                           aria-describedby="basic-addon1"
-                           required="" />
+                           disabled="@TaskRunning"
+                           @bind=Username />
                 </div>
                 <div class="input-group mb-3">
                     <div class="input-group-prepend">
@@ -33,12 +34,15 @@
                             <i class="bi bi-shield-lock"></i>
                         </span>
                     </div>
-                    <input type="text"
+                    <input type="password"
                            class="form-control form-control-lg"
                            placeholder="Password"
-                           aria-label="Password"
-                           aria-describedby="basic-addon1"
-                           required="" />
+                           disabled="@TaskRunning"
+                           @bind=Password />
+                </div>
+                <div class="form-check form-switch" style="font-size: 140%;">
+                    <input class="form-check-input force-border-radius-2em" type="checkbox" disabled="@TaskRunning" @bind=KeepSignedIn />
+                    <label class="form-check-label">Keep signed in</label>
                 </div>
             </div>
         </div>
@@ -47,23 +51,85 @@
                 <div class="form-group">
                     <div class="pt-3">
                         <button class="btn btn-sw-blue"
-                                id="to-recover"
-                                type="button"
-                                style="font-size: 140%;">
+                                style="font-size: 140%;"
+                                disabled="@TaskRunning">
                             <i class="bi bi-shield-lock"></i> Lost password?
                         </button>
-                        <button class="btn float-end btn-sw-blue"
-                                type="submit"
-                                style="font-size: 140%;">
-                            <i class="bi bi-box-arrow-in-right"></i> Login
+                        <button class="btn float-end btn-sw-blue" style="font-size: 140%; min-width: 100px;"
+                                disabled="@TaskRunning"
+                                @onclick=DoSignIn>
+                            @if (TaskRunning)
+                            {
+                                <div class="spinner-border text-light" role="status" />
+                            }
+                            else
+                            {
+                                <span><i class="bi bi-box-arrow-in-right"></i> Login</span>
+                            }
                         </button>
                     </div>
                 </div>
             </div>
         </div>
-    </form>
+    </div>
 </div>
 
 @code {
+    private string? Username;
+    private string? Password;
+    private bool KeepSignedIn;
 
+    private bool TaskRunning;
+
+    private async Task DoSignIn()
+    {
+        if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
+        {
+            ToastManager.Instance?.Add("Username and Password are required!");
+            return;
+        }
+
+        TaskRunning = true;
+        var response = await Http.PostAsJsonAsync<LoginRequestModel>("Login/Login", new LoginRequestModel
+            {
+                Username = Username,
+                Password = Password
+            });
+
+        var result = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
+
+        if (result == null)
+        {
+            ToastManager.Instance?.Add("Something went wrong.., Contact your nearest Collegue and try again");
+        }
+        else if (!result.Success)
+        {
+            foreach (var msg in result.Messages!)
+            {
+                ToastManager.Instance?.Add(msg.Content);
+            }
+        }
+        else
+        {
+            State.User = new UserState
+                {
+                    Username = Username,
+                    Token = result.Token,
+                    Permissions = result.Permissions,
+                    Limits = result.Limits
+                };
+
+            if (KeepSignedIn)
+            {
+                await Storage.SetItemAsync("User", State.User);
+            }
+            else
+            {
+                await Storage.RemoveItemAsync("User");
+            }            
+
+            Nav.NavigateTo("");
+        }
+        TaskRunning = false;
+    }
 }

@@ -1,0 +1,22 @@
+﻿<div class="toast show align-items-center" role="alert">
+    <div class="d-flex">
+        <div class="toast-body">
+            @Message
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" style="color: white; background: none;" @onclick=OnClose>
+            <i class="bi bi-x-lg"></i>
+        </button>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public ToastManager? Toaster { get; set; }
+    [Parameter]
+    public string? Message { get; set; }
+
+    private void OnClose() 
+    {
+        Toaster!.Remove(Message!);
+    }
+}

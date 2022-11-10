@@ -1,0 +1,32 @@
+﻿@using ShopDev.Client.Components.Toasts
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11">
+    @foreach (var msg in Messages)
+    {
+        <MessageToast Message="@msg" Toaster="@this"></MessageToast>
+    }
+</div>
+
+@code {
+    public static ToastManager? Instance { get; private set; }
+
+    private readonly List<string> Messages = new();
+
+    public void Add(string msg) 
+    {
+        Messages.Add(msg);
+        StateHasChanged();
+    }
+
+    public void Remove(string msg) 
+    { 
+        Messages.Remove(msg);
+        StateHasChanged();
+    }
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Instance = this;
+    }
+}

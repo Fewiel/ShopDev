@@ -2,9 +2,11 @@
     --color-sw-blue: #189eff;
     --color-sw-blue-dark: #007eda;
     --color-page-bg: #395467;
+    --color-text-default: white;
 }
 
 body {
+    color: var(--color-text-default);
     background-color: var(--color-page-bg);
 }
 
@@ -59,4 +61,19 @@ body {
     to {
         transform: rotate(359deg);
     }
+}
+
+.force-border-radius-2em {
+    border-radius: 2em !important;
+}
+
+.form-check-input:checked {
+    background-color: var(--color-sw-blue);    
+    border-color: var(--color-sw-blue);
+    
+}
+
+.toast {
+    background-color: var(--color-sw-blue);
+    color: var(--color-text-default);
 }

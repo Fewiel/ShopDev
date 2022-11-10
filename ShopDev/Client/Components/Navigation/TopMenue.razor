@@ -1,4 +1,6 @@
-﻿<div class="navbar-collapse collapse"
+﻿@inject AppState State
+
+<div class="navbar-collapse collapse"
      id="navbarSupportedContent"
      data-navbarbg="skin5">
     <!-- ============================================================== -->
@@ -53,10 +55,7 @@
                role="button"
                data-bs-toggle="dropdown"
                aria-expanded="false">
-                <img src="../assets/images/users/1.jpg"
-                     alt="user"
-                     class="rounded-circle"
-                     width="31" />
+               <span>@State.User!.Username</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end user-dd animated"
                 aria-labelledby="navbarDropdown">

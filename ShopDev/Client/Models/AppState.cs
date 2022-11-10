@@ -2,5 +2,6 @@
 
 public class AppState
 {
-    public bool LoggedIn { get; set; }
+    public bool LoggedIn => User != null;
+    public UserState? User { get; set; }
 }

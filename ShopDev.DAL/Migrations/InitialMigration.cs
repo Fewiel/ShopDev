@@ -9,6 +9,9 @@ public class InitialMigration : Migration
     public override void Down()
     {
         Delete.Table("Settings");
+        Delete.Table("Logs");
+        Delete.Table("Users");
+        Delete.Table("Tokens");
     }
 
     public override void Up()

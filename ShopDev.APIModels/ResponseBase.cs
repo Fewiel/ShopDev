@@ -1,16 +1,18 @@
-﻿namespace ShopDev.APIModels;
+﻿using ShopDev.APIModels.Models;
+
+namespace ShopDev.APIModels;
 
 public abstract class ResponseBase<TSelf> where TSelf : ResponseBase<TSelf>, new()
 {
     public bool Success { get; set; }
-    public Dictionary<string, string>? Messages { get; set; }
+    public List<Message>? Messages { get; set; }
 
     public TSelf WithMessage(string msg, string type)
     {
         if (Messages == null)
-            Messages = new Dictionary<string, string>();
-        
-        Messages.Add(msg, type);
+            Messages = new List<Message>();
+
+        Messages.Add(new(msg, type));
         return (TSelf)this;
     }
 
