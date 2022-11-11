@@ -1,8 +1,13 @@
 ﻿:root {
     --color-sw-blue: #189eff;
     --color-sw-blue-dark: #007eda;
+    --color-sw-blue-disabled: #e5f4ff;
     --color-page-bg: #395467;
     --color-text-default: white;
+
+    --color-success-light: #37d046; 
+    --color-warning-light: #ff9800;
+    --color-error-light: #de294c;
 }
 
 body {
@@ -76,4 +81,55 @@ body {
 .toast {
     background-color: var(--color-sw-blue);
     color: var(--color-text-default);
+}
+
+.page-wrapper {
+    color: var(--color-text-default);
+    background-color: var(--color-page-bg);
+}
+
+.table thead th {
+    background-color: var(--color-page-bg);
+    color: var(--color-text-default) !important;
+}
+
+.table tbody td {
+    background-color: var(--color-page-bg);
+    color: var(--color-text-default) !important;
+}
+
+.page-link {
+    color: var(--color-text-default);
+    background-color: var(--color-sw-blue);
+    border: var(--color-sw-blue-dark);    
+}
+
+.page-link:hover {
+    color: var(--color-text-default);
+    background-color: var(--color-sw-blue-dark);
+    border: var(--color-sw-blue);
+}
+
+.page-item.active .page-link {
+    color: var(--color-text-default);
+    background-color: var(--color-sw-blue-dark);
+    border: var(--color-sw-blue-dark);
+}
+
+.page-item.disabled .page-link {
+    color: var(--color-sw-blue-dark);
+    background-color: var(--color-sw-blue-disabled);
+    border: var(--color-sw-blue-disabled);
+}
+
+.success-light {
+    color: var(--color-success-light);
+}
+
+.warning-light {
+    color: var(--color-warning-light);
+}
+
+.error-light {
+    color: var(--color-error-light);
 }

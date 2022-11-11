@@ -24,5 +24,12 @@ public abstract class ResponseBase<TSelf> where TSelf : ResponseBase<TSelf>, new
         t.Success = true;
         configure(t);
         return t;
+    } 
+    
+    public static TSelf Ok()
+    {
+        var t = new TSelf();
+        t.Success = true;
+        return t;
     }
 }

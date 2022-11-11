@@ -44,6 +44,7 @@ public class LoginController : ControllerBase
 
         return LoginResponseModel.Ok(m =>
         {
+            m.UserId = usr.Id;
             m.Permissions = new();
             m.Limits = new();
             m.Token = new APIModels.Token { Content = token.Id.ToString(), ExpireTime = token.ExpireTime };

@@ -1,0 +1,67 @@
+﻿@page "/Administration/Users"
+@inject HttpClient Http
+@inject AppState State
+
+@if (UserData != null)
+{
+    <Table TableData="@UserData">
+        <td>
+            @if (context.Active && context.ExpirationDate == null)
+            {
+                <i class="bi bi-person-fill success-light"></i>
+            }
+            else if (context.Active && context.ExpirationDate != null)
+            {
+                <i class="bi bi-person-fill warning-light"></i>
+            }
+            else 
+            {
+                <i class="bi bi-person-fill-slash error-light"></i>
+            }
+        </td>
+        <td>@context.Username</td>
+        <td>@context.Name</td>
+        <td>@context.Email</td>
+        <td>@context.RoleName</td>
+        <td>
+            <i class="bi bi-person-fill-gear"></i>
+            <i class="bi bi-person-fill-lock"></i>
+            <i class="bi bi-person-fill-x"></i>
+        </td>
+    </Table>
+}
+else
+{
+    <div class="spinner-box" style="position: absolute; height: 100%; width: 100%;">
+        <div class="circle-border">
+            <div class="circle-core"></div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<TableHeaderData> TableHeaders = new() {
+        new TableHeaderData { Content = "State" },
+        new TableHeaderData { Content = "Username" },
+        new TableHeaderData { Content = "Name" },
+        new TableHeaderData { Content = "E-Mail" },
+        new TableHeaderData { Content = "Role" },
+        new TableHeaderData { Content = "Actions" },
+    };
+
+    private TableData<User>? UserData;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var response = await Http.PostAsJsonAsync<RequestBase>(
+            "Administration/Users/GetAll", new RequestBase
+            {
+                Token = State.User?.Token,
+                UserId = State.User?.UserId
+            });
+
+        var result = await response.Content.ReadFromJsonAsync<GenericRepsonse<List<User>>>();
+
+        UserData = new(TableHeaders, result.Value);
+    }
+}
