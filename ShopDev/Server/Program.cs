@@ -9,7 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 #if DEBUG
-var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#; convert zero datetime=True;");
+var database = new Database($"server=localhost;database=shopdev;uid=shopdev;pwd=ShopDev2022!; convert zero datetime=True;");
 #endif
 
 database.ConfigureMigrate(builder.Services);
