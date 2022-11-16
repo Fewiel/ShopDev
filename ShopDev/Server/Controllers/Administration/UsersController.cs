@@ -28,7 +28,7 @@ public class UsersController : ControllerBase
                 Id = usr.Id,
                 Username = usr.Username,
                 Name = usr.Name,
-                RoleID = usr.RoleID,
+                RoleID = usr.RoleId,
                 AbsenceReason = usr.AbsenceReason,
                 AbsenceDate = usr.AbsenceDate,
                 Active = usr.Active,
@@ -36,7 +36,7 @@ public class UsersController : ControllerBase
                 Email = usr.Email,
                 ExpirationDate = usr.ExpirationDate,
                 LastUsed = usr.LastUsed,
-                SlackID = usr.SlackID
+                SlackID = usr.SlackId
             });
         }
 

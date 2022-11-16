@@ -2,7 +2,7 @@
 
 namespace ShopDev.DAL.Models;
 
-public class Permission : IDBIdentifier
+public class Limit : IDBIdentifier
 {
     public Guid Id { get; set; }
     public string? Name { get; set; }

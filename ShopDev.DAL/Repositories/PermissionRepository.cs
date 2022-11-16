@@ -17,7 +17,7 @@ public class PermissionRepository : RepositoryBase<Permission>
     public Permission GetByName(string internalName)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        var permission = c.Connection.QuerySingleOrDefault<Permission>("select * from `permissions` where `InternalName` = @internalName", new
+        var permission = c.Connection.QuerySingleOrDefault<Permission>("select * from `Permissions` where `InternalName` = @internalName", new
         {
             internalName
         });
@@ -31,7 +31,7 @@ public class PermissionRepository : RepositoryBase<Permission>
         var pid = GetByName(internalName).Id;
         var usr = await _userRepository.GetByIDAsync(u.Id);
 
-        var hasUserPermission = c.Connection.ExecuteScalar<bool>("select Count(1) from `users_permissions` where `UserID` = @uid and `PermissionID` = @pid limit 1", new
+        var hasUserPermission = c.Connection.ExecuteScalar<bool>("select Count(1) from `User_Permissions` where `UserId` = @uid and `PermissionId` = @pid limit 1", new
         {
             uid = usr.Id,
             pid
@@ -40,9 +40,9 @@ public class PermissionRepository : RepositoryBase<Permission>
         if (hasUserPermission)
             return true;
 
-        var hasPermission = c.Connection.ExecuteScalar<bool>("select Count(1) from `role_permissions` where `RoleID` = @rid and `PermissionID` = @pid limit 1", new
+        var hasPermission = c.Connection.ExecuteScalar<bool>("select Count(1) from `Role_Permissions` where `RoleId` = @rid and `PermissionId` = @pid limit 1", new
         {
-            rid = usr.RoleID,
+            rid = usr.RoleId,
             pid
         });
 
@@ -54,12 +54,12 @@ public class PermissionRepository : RepositoryBase<Permission>
         using var c = new MySQLConnectionWrapper(DB.ConnString);
         var usr = await _userRepository.GetByIDAsync(u.Id);
 
-        return c.Connection.Query<Permission>("SELECT `ID`, `Name`, `InternalName` FROM ((Select up.PermissionID From `users_permissions` " +
-            "as up where up.UserID = @uid) UNION (Select rp.PermissionID From `role_permissions` as rp where rp.RoleID = @rid)) " +
-            "as a left JOIN `permissions` on a.PermissionID = permissions.ID;", new
+        return c.Connection.Query<Permission>("SELECT `Id`, `Name`, `InternalName` FROM ((Select up.PermissionId From `User_Permissions` " +
+            "as up where up.UserId = @uid) UNION (Select rp.PermissionId From `Role_Permissions` as rp where rp.RoleId = @rid)) " +
+            "as a left JOIN `Permissions` on a.PermissionId = Permissions.Id;", new
             {
                 uid = usr.Id,
-                rid = usr.RoleID
+                rid = usr.RoleId
             });
     }
 }

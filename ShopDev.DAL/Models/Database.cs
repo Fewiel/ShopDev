@@ -49,9 +49,18 @@ public class Database
 
     public void ConfigureRepositories(IServiceCollection sc)
     {
+        var userRepo = new UserRepository(this);
+
         sc.AddSingleton(new LogRepository(this));
-        sc.AddSingleton(new SettingRepository(this));
-        sc.AddSingleton(new UserRepository(this));
+        sc.AddSingleton(new SettingRepository(this));        
+        sc.AddSingleton(userRepo);        
+        sc.AddSingleton(new PermissionRepository(this, userRepo));
         sc.AddSingleton(new TokenRepository(this));
+        sc.AddSingleton(new LimitRepository(this));
+        sc.AddSingleton(new RoleRepository(this));
+        sc.AddSingleton(new RoleLimitRepository(this));
+        sc.AddSingleton(new RolePermissionRepository(this));
+        sc.AddSingleton(new UserLimitRepository(this));
+        sc.AddSingleton(new UserPermissionRepository(this));
     }
 }
