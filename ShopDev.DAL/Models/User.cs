@@ -13,7 +13,7 @@ public class User : IDBIdentifier
     public string? SSHPublicKey { get; set; }
     public bool Active { get; set; }
     public DateTime LastUsed { get; set; }
-    public DateTime ExpirationDate { get; set; }
+    public DateTime? ExpirationDate { get; set; }
     public Guid RoleId { get; set; }
     public DateTime AbsenceDate { get; set; }
     public string? AbsenceReason { get; set; }
