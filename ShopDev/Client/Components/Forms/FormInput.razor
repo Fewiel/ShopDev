@@ -1,0 +1,41 @@
+﻿<div class="input-group mb-3">
+    @if (Icon != null)
+    {
+        <div class="input-group-prepend">
+            <span class="input-group-text bg-sw-blue text-white h-100" style="font-size: 140%;">
+                <i class="@Icon"></i>
+            </span>
+        </div>
+    }
+
+    <input type="@Type"
+           class="form-control form-control-lg"
+           placeholder="@(Placeholder ?? "")"
+           disabled="@Disabled"
+           @bind=Content />
+</div>
+
+@code {
+    public string? Placeholder { get; set; }
+    public string? Icon { get; set; }
+    public bool Disabled { get; set; }
+    public string Type { get; set; } = "text";
+
+    private string? _content;
+    [Parameter]
+    public string? Content
+    {
+        get => _content;
+        set
+        {
+            if (_content == value)
+                return;
+
+            _content = value;
+            ContentChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<string> ContentChanged { get; set; }
+}

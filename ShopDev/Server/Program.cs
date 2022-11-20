@@ -9,35 +9,11 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
 #if DEBUG
-var database = new Database($"server=localhost;database=shopdev;uid=shopdev;pwd=ShopDev2022!; convert zero datetime=True;");
+var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#; convert zero datetime=True;");
 #endif
 
 database.ConfigureMigrate(builder.Services);
 database.ConfigureRepositories(builder.Services);
-
-//builder.Services.AddIdentity<IdentityUser, IdentityRole>();
-
-//Jwt
-//var jwtSettings = builder.Configuration.GetSection("JWTSettings");
-//builder.Services.AddAuthentication(opt =>
-//{
-//    opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-//    opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-//}).AddJwtBearer(options =>
-//{
-//    options.TokenValidationParameters = new TokenValidationParameters
-//    {
-//        ValidateIssuer = true,
-//        ValidateAudience = true,
-//        ValidateLifetime = true,
-//        ValidateIssuerSigningKey = true,
-//        ValidIssuer = jwtSettings["validIssuer"],
-//        ValidAudience = jwtSettings["validAudience"],
-//        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["securityKey"]))
-//    };
-//});
-
-//builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -62,12 +38,8 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-
 app.MapRazorPages();
 app.MapControllers();
 app.MapFallbackToFile("index.html");
-
-//app.UseAuthentication();
-//app.UseAuthorization();
 
 app.Run();

@@ -13,7 +13,7 @@ public class RoleLimitRepository
 		DB = db;
 	}
 
-    public async Task<IEnumerable<RoleLimit>> GetForRoleAsync(long roleID)
+    public async Task<IEnumerable<RoleLimit>> GetForRoleAsync(Guid roleID)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
         return await c.Connection.QueryAsync<RoleLimit>("select * from `Role_Limits` where `RoleId` = @roleID", new
@@ -22,7 +22,7 @@ public class RoleLimitRepository
         });
     }
 
-    public async Task<RoleLimit> GetForRoleAndLimitAsync(long roleID, long limitID)
+    public async Task<RoleLimit> GetForRoleAndLimitAsync(Guid roleID, Guid limitID)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
         return await c.Connection.QuerySingleOrDefaultAsync<RoleLimit>("select * from `Role_Limits` where `RoleId` = @roleID and `LimitId` = @limitID", new

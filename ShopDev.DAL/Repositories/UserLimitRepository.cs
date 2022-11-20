@@ -13,7 +13,7 @@ public class UserLimitRepository
         DB = db;
     }
 
-    public async Task<IEnumerable<UserLimit>> GetForUserAsync(long id)
+    public async Task<IEnumerable<UserLimit>> GetForUserAsync(Guid id)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
         return await c.Connection.QueryAsync<UserLimit>("select * from `User_Limits` where `UserId` = @id", new
@@ -22,7 +22,7 @@ public class UserLimitRepository
         });
     }
 
-    public async Task<UserLimit> GetForUserAndLimitAsync(long id, long lid)
+    public async Task<UserLimit> GetForUserAndLimitAsync(Guid id, Guid lid)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
         return await c.Connection.QuerySingleOrDefaultAsync<UserLimit>("select * from `User_Limits` where `UserId` = @id and `LimitId` = @lid", new
