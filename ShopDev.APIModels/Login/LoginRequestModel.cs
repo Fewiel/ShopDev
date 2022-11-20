@@ -5,14 +5,16 @@ public class LoginRequestModel
     public string? Username { get; set; }
     public string? Password { get; set; }
 
-    public bool Validate()
+    public bool Validate(out Dictionary<string, string>? validationErrors)
     {
+        validationErrors = new();
+
         if (string.IsNullOrEmpty(Username))
-            return false;
+            validationErrors.Add("Username", "Username is required!");
 
-        if (string.IsNullOrEmpty(Password)) 
-            return false;
+        if (string.IsNullOrEmpty(Password))
+            validationErrors.Add("Password", "Password is required!");
 
-        return true;
+        return validationErrors.Count == 0;
     }
 }

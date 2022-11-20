@@ -1,41 +1,72 @@
-﻿<div class="input-group mb-3">
-    @if (Icon != null)
+﻿<div class="mb-3">
+    <div class="input-group">
+        @if (Icon != null)
+        {
+            <div class="input-group-prepend">
+                <span class="input-group-text bg-sw-blue text-white h-100" style="font-size: 140%;">
+                    <i class="@Icon"></i>
+                </span>
+            </div>
+        }
+
+        <input type="@Type"
+               class="form-control form-control-lg"
+               placeholder="@(Placeholder ?? "")"
+               disabled="@Disabled"
+               @bind=Value
+               @bind:event="oninput"
+               @onkeydown=KeyDown />
+    </div>
+
+    @if (Error != null)
     {
-        <div class="input-group-prepend">
-            <span class="input-group-text bg-sw-blue text-white h-100" style="font-size: 140%;">
-                <i class="@Icon"></i>
-            </span>
+        <div class="invalid-feedback" style="display: block; font-size: 100%">
+            @Error
         </div>
     }
-
-    <input type="@Type"
-           class="form-control form-control-lg"
-           placeholder="@(Placeholder ?? "")"
-           disabled="@Disabled"
-           @bind=Content />
 </div>
-
 @code {
-    public string? Placeholder { get; set; }
-    public string? Icon { get; set; }
-    public bool Disabled { get; set; }
-    public string Type { get; set; } = "text";
-
-    private string? _content;
     [Parameter]
-    public string? Content
+    public string? Placeholder { get; set; }
+    [Parameter]
+    public string? Icon { get; set; }
+    [Parameter]
+    public bool Disabled { get; set; }
+    [Parameter]
+    public string Type { get; set; } = "text";
+    [Parameter]
+    public string? Error { get; set; }
+
+    private string? _value;
+    [Parameter]
+    public string? Value
     {
-        get => _content;
+        get => _value;
         set
         {
-            if (_content == value)
+            if (_value == value)
                 return;
 
-            _content = value;
+            _value = value;
             ContentChanged.InvokeAsync(value);
         }
     }
 
     [Parameter]
     public EventCallback<string> ContentChanged { get; set; }
+
+    [Parameter]
+    public EventCallback OnEnter { get; set; }
+
+    private void KeyDown(KeyboardEventArgs keyArgs)
+    {
+        if (keyArgs.Code == "Enter" || keyArgs.Code == "NumpadEnter")
+            OnEnter.InvokeAsync();
+    }
+
+    public void SetError(string? err)
+    {
+        Error = err;
+        StateHasChanged();
+    }
 }

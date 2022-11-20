@@ -21,8 +21,8 @@ public class LoginController : ControllerBase
     [HttpPost]
     public async Task<LoginResponseModel> LoginAsync(LoginRequestModel lr)
     {
-        if (!lr.Validate())
-            return LoginResponseModel.Fail();
+        if (!lr.Validate(out var validationErrors))
+            return LoginResponseModel.Fail().WithValidation(validationErrors);
 
         var usr = await Users.GetByUsernameAsync(lr.Username!);
 

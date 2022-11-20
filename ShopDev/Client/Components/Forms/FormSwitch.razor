@@ -1,0 +1,46 @@
+﻿<div>
+    <div class="form-check form-switch" style="font-size: 140%;">
+        <input class="form-check-input force-border-radius-2em" type="checkbox" disabled="@Disabled" @bind="Value" />
+        <label class="form-check-label">@Text</label>
+    </div>
+
+    @if (Error != null)
+    {
+        <div class="invalid-feedback" style="display: block; font-size: 100%">
+            @Error
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string? Text { get; set; }
+    [Parameter]
+    public bool? Disabled { get; set; }
+    [Parameter]
+    public string? Error { get; set; }
+
+    private bool _value;
+    [Parameter]
+    public bool Value
+    {
+        get => _value;
+        set
+        {
+            if (_value == value)
+                return;
+
+            _value = value;
+            ContentChanged.InvokeAsync(value);
+        }
+    }
+
+    [Parameter]
+    public EventCallback<bool> ContentChanged { get; set; }
+
+    public void SetError(string? err)
+    {
+        Error = err;
+        StateHasChanged();
+    }
+}

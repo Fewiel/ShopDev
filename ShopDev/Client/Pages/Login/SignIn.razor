@@ -12,38 +12,27 @@
         </span>
     </div>
 
-    <!-- Form -->
     <div class="form-horizontal mt-3">
         <div class="row pb-4">
             <div class="col-12">
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text bg-sw-blue text-white h-100" style="font-size: 140%;">
-                            <i class="bi bi-person"></i>
-                        </span>
-                    </div>
-                    <input type="text"
-                           class="form-control form-control-lg"
-                           placeholder="Username"
-                           disabled="@TaskRunning"
-                           @bind=Username />
-                </div>
-                <div class="input-group mb-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text bg-sw-blue text-white h-100" style="font-size: 140%;">
-                            <i class="bi bi-shield-lock"></i>
-                        </span>
-                    </div>
-                    <input type="password"
-                           class="form-control form-control-lg"
-                           placeholder="Password"
-                           disabled="@TaskRunning"
-                           @bind=Password />
-                </div>
-                <div class="form-check form-switch" style="font-size: 140%;">
-                    <input class="form-check-input force-border-radius-2em" type="checkbox" disabled="@TaskRunning" @bind=KeepSignedIn />
-                    <label class="form-check-label">Keep signed in</label>
-                </div>
+
+                <FormInput @ref=InputUsername
+                           Icon="bi bi-person"
+                           Placeholder="Username"
+                           Disabled=TaskRunning
+                           @bind-Content="Username"
+                           OnEnter=DoSignIn />
+
+                <FormInput @ref=InputPassword
+                           Icon="bi bi-shield-lock"
+                           Placeholder="Password"
+                           Type="password"
+                           Disabled=TaskRunning
+                           @bind-Content="Password"
+                           OnEnter=DoSignIn />
+
+                <FormSwitch Text="Keep signed in" @bind-Content=KeepSignedIn Disabled=@TaskRunning />
+
             </div>
         </div>
         <div class="row border-top border-secondary">
@@ -81,13 +70,13 @@
 
     private bool TaskRunning;
 
+    private FormInput? InputUsername;
+    private FormInput? InputPassword;
+
     private async Task DoSignIn()
     {
-        if (string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password))
-        {
-            ToastManager.Instance?.Add("Username and Password are required!");
-            return;
-        }
+        InputUsername?.SetError(null);
+        InputPassword?.SetError(null);
 
         TaskRunning = true;
         var response = await Http.PostAsJsonAsync<LoginRequestModel>("Login/Login", new LoginRequestModel
@@ -104,9 +93,20 @@
         }
         else if (!result.Success)
         {
-            foreach (var msg in result.Messages!)
+            if (result.Messages != null)
             {
-                ToastManager.Instance?.Add(msg.Content);
+                foreach (var msg in result.Messages!)
+                {
+                    ToastManager.Instance?.Add(msg.Content);
+                }
+            }
+
+            if (result.FormValidations != null)
+            {
+                if (result.FormValidations.TryGetValue("Username", out var errorUsername))
+                    InputUsername?.SetError(errorUsername);
+                if (result.FormValidations.TryGetValue("Password", out var errorPassword))
+                    InputPassword?.SetError(errorPassword);
             }
         }
         else
@@ -127,10 +127,11 @@
             else
             {
                 await Storage.RemoveItemAsync("User");
-            }            
+            }
 
             Nav.NavigateTo("");
         }
+
         TaskRunning = false;
     }
 }
