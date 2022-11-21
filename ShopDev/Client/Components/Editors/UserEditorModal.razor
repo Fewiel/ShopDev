@@ -1,0 +1,45 @@
+﻿@inject HttpClient Http
+
+<ModalHeader Titel=@(User == null ? "Loading User..." : $"Edit User: {User.Username}") />
+
+<ModalBody>
+    @if (User == null)
+    {
+        <LoadingSpinner />
+    }
+    else
+    {
+        <UserEditor>
+
+        </UserEditor>
+    }
+</ModalBody>
+
+<ModalFooter>
+    <button type="button" class="btn btn-secondary" @onclick=Close>Close</button>
+    <button type="button" class="btn btn-primary" disabled=@(User == null || TaskRunning)>Save</button>
+</ModalFooter>
+
+@code {
+    [Parameter]
+    public Guid UserId { get; set; }
+    private User? User;
+    private bool TaskRunning;
+
+    private void Save() 
+    {
+        //var response = await Http.PostAsJsonAsync<RequestBase>(
+        //    "Administration/Users/Get", new RequestBase
+        //    {
+        //        Token = State.User?.Token,
+        //        UserId = State.User?.UserId
+        //    });
+
+        //var result = await response.Content.ReadFromJsonAsync<GenericRepsonse<List<User>>>();
+    }
+
+    private void Close() 
+    {
+        ModalManager.Instance?.Hide();
+    }
+}

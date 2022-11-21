@@ -8,7 +8,6 @@ public class DefaultDataMigration : Migration
 {
     public override void Down()
     {
-        throw new NotImplementedException();
     }
 
     public override void Up()
@@ -34,7 +33,21 @@ public class DefaultDataMigration : Migration
         {
             RoleId = defaultAdminRoleId,
             PermissionId = defaultAdminPermissionId
-        });            
+        });
+
+        var mngUserPermId = Guid.NewGuid();
+        Insert.IntoTable("Permissions").Row(new Permission
+        {
+            Id = mngUserPermId,
+            Name = "Manage Users",
+            InternalName = "manage_users"
+        });
+
+        Insert.IntoTable("Role_Permissions").Row(new RolePermission
+        {
+            RoleId = defaultAdminRoleId,
+            PermissionId = mngUserPermId
+        });
 
         Insert.IntoTable("Limits").Row(new Limit
         {

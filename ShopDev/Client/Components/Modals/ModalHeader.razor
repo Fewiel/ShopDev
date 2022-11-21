@@ -6,7 +6,9 @@
 </div>
 
 @code {
+    [Parameter]
     public string? Titel { get; set; }
+    [Parameter]
     public Func<bool>? ShouldClose { get; set; }
 
     public void BtnClick() 

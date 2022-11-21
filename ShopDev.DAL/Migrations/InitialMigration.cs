@@ -17,6 +17,7 @@ public class InitialMigration : Migration
         Delete.Table("Role_Permissions");
         Delete.Table("User_Limits");
         Delete.Table("User_Permissions");
+        Delete.Table("Permissions");
     }
 
     public override void Up()
@@ -53,7 +54,7 @@ public class InitialMigration : Migration
         Create.Table("Tokens")
             .WithColumn("Id").AsGuid().PrimaryKey()
             .WithColumn("UserId").AsGuid().Indexed()
-            .WithColumn("ExpireTime").AsDateTime()            
+            .WithColumn("ExpireTime").AsDateTime()
             .WithColumn("Type").AsInt16();
 
         Create.Table("Permissions")
@@ -69,7 +70,7 @@ public class InitialMigration : Migration
         Create.Table("Roles")
             .WithColumn("Id").AsGuid()
             .WithColumn("Name").AsString()
-            .WithColumn("Description").AsString();            
+            .WithColumn("Description").AsString();
 
         Create.Table("Role_Limits")
             .WithColumn("RoleId").AsGuid().Indexed()
@@ -87,6 +88,6 @@ public class InitialMigration : Migration
 
         Create.Table("User_Permissions")
             .WithColumn("UserId").AsGuid().Indexed()
-            .WithColumn("PermissionId").AsGuid().Indexed();            
+            .WithColumn("PermissionId").AsGuid().Indexed();
     }
 }

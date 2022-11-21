@@ -2,6 +2,7 @@
 using ShopDev.APIModels;
 using ShopDev.APIModels.Models;
 using ShopDev.DAL.Repositories;
+using ShopDev.Server.Attributes;
 
 namespace ShopDev.Server.Controllers.Administration;
 
@@ -17,7 +18,8 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<GenericRepsonse<List<User>>> GetAll(RequestBase rb)
+    [Permission("")]
+    public async Task<GenericRepsonse<List<User>>> GetAll(RequestBase request)
     {
         var users = new List<User>();
 
@@ -42,4 +44,10 @@ public class UsersController : ControllerBase
 
         return GenericRepsonse<List<User>>.Ok().WithValue(users);
     }
+
+    //[HttpPost]
+    //public async Task<GenericRepsonse<User>> Get(GenericRequest<Guid> request)
+    //{
+        
+    //}
 }

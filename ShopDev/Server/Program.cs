@@ -17,6 +17,14 @@ database.ConfigureRepositories(builder.Services);
 
 var app = builder.Build();
 
+#if DEBUG
+try
+{
+    database.DeleteDBAsync(app.Services);
+}
+catch { }
+#endif
+
 database.Migrate(app.Services);
 
 // Configure the HTTP request pipeline.

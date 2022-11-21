@@ -20,7 +20,7 @@
                            Icon="bi bi-person"
                            Placeholder="Username"
                            Disabled=TaskRunning
-                           @bind-Content="Username"
+                           @bind-Value="Username"
                            OnEnter=DoSignIn />
 
                 <FormInput @ref=InputPassword
@@ -28,10 +28,10 @@
                            Placeholder="Password"
                            Type="password"
                            Disabled=TaskRunning
-                           @bind-Content="Password"
+                           @bind-Value="Password"
                            OnEnter=DoSignIn />
 
-                <FormSwitch Text="Keep signed in" @bind-Content=KeepSignedIn Disabled=@TaskRunning />
+                <FormSwitch Text="Keep signed in" @bind-Value=KeepSignedIn Disabled=@TaskRunning />
 
             </div>
         </div>

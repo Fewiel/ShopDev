@@ -48,12 +48,12 @@
                 return;
 
             _value = value;
-            ContentChanged.InvokeAsync(value);
+            ValueChanged.InvokeAsync(value);
         }
     }
 
     [Parameter]
-    public EventCallback<string> ContentChanged { get; set; }
+    public EventCallback<string> ValueChanged { get; set; }
 
     [Parameter]
     public EventCallback OnEnter { get; set; }

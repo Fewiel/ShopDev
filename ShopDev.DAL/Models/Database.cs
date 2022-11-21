@@ -3,6 +3,7 @@ using FluentMigrator.Runner;
 using Microsoft.Extensions.DependencyInjection;
 using ShopDev.DAL.Migrations;
 using ShopDev.DAL.Repositories;
+using ShopDev.DAL.Utility;
 
 namespace ShopDev.DAL.Models;
 
@@ -45,6 +46,17 @@ public class Database
 
         // Execute the migrations
         runner.MigrateUp();
+    }
+
+    public async Task DeleteDBAsync(IServiceProvider sp)
+    {
+        using var serviceScrope = sp.CreateScope();
+        var service = serviceScrope.ServiceProvider;
+        var runner = service.GetRequiredService<IMigrationRunner>();
+
+        using var c = new MySQLConnectionWrapper(ConnString);
+        await c.Connection.ExecuteAsync("drop database shopdev;");
+        await c.Connection.ExecuteAsync("create database shopdev;");
     }
 
     public void ConfigureRepositories(IServiceCollection sc)

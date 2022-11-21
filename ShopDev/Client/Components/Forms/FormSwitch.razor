@@ -31,12 +31,12 @@
                 return;
 
             _value = value;
-            ContentChanged.InvokeAsync(value);
+            ValueChanged.InvokeAsync(value);
         }
     }
 
     [Parameter]
-    public EventCallback<bool> ContentChanged { get; set; }
+    public EventCallback<bool> ValueChanged { get; set; }
 
     public void SetError(string? err)
     {
