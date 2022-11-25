@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
 using ShopDev.APIModels;
 using ShopDev.APIModels.Models;
 using ShopDev.DAL.Repositories;
@@ -11,10 +12,12 @@ namespace ShopDev.Server.Controllers.Administration;
 public class UsersController : ControllerBase
 {
     private readonly UserRepository _userRepository;
+    private readonly IMapper _mapper;
 
-    public UsersController(UserRepository userRepository)
+    public UsersController(UserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
 
     [HttpPost]
@@ -25,29 +28,16 @@ public class UsersController : ControllerBase
 
         foreach (var usr in await _userRepository.GetAllAsync())
         {
-            users.Add(new()
-            {
-                Id = usr.Id,
-                Username = usr.Username,
-                Name = usr.Name,
-                RoleID = usr.RoleId,
-                AbsenceReason = usr.AbsenceReason,
-                AbsenceDate = usr.AbsenceDate,
-                Active = usr.Active,
-                AdminNote = usr.AdminNote,
-                Email = usr.Email,
-                ExpirationDate = usr.ExpirationDate,
-                LastUsed = usr.LastUsed,
-                SlackID = usr.SlackId
-            });
+            users.Add(_mapper.Map<User>(usr));
         }
 
         return GenericRepsonse<List<User>>.Ok().WithValue(users);
     }
 
     [HttpPost]
+    [Permission("administration_users_get")]
     public async Task<GenericRepsonse<User>> Get(GenericRequest<Guid> request)
     {
-        
+        return GenericRepsonse<User>.Ok().WithValue(_mapper.Map<User>(await _userRepository.GetByIDAsync(request.Value)));
     }
 }

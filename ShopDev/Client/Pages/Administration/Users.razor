@@ -24,8 +24,12 @@
         <td>@context.Name</td>
         <td>@context.Email</td>
         <td>@context.RoleName</td>
-        <td>
-            <i class="bi bi-person-fill-gear"></i>
+        <td>        
+            @{
+                var id = context.Id;
+                Console.WriteLine(id);
+            }
+            <a @onclick=@(() => EditUser(id)) style="cursor: pointer;"><i class="bi bi-person-fill-gear" /></a>
             <i class="bi bi-person-fill-lock"></i>
             <i class="bi bi-person-fill-x"></i>
         </td>
@@ -64,5 +68,11 @@ else
         var result = await response.Content.ReadFromJsonAsync<GenericRepsonse<List<User>>>();
 
         UserData = new(TableHeaders, result.Value);
+    }
+
+    private void EditUser(Guid userId) 
+    {
+        Console.WriteLine("Edit User: " + userId);
+        ModalManager.Instance!.Show<UserEditorModal>(new Dictionary<string, object> { { "UserId", userId } });
     }
 }

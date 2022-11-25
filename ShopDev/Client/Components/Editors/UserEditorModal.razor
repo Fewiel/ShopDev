@@ -1,17 +1,18 @@
 ﻿@inject HttpClient Http
+@inject AppState State
 
 <ModalHeader Titel=@(User == null ? "Loading User..." : $"Edit User: {User.Username}") />
 
 <ModalBody>
+    @UserId
+
     @if (User == null)
     {
-        <LoadingSpinner />
+        <span>Loading...</span>
     }
     else
     {
-        <UserEditor>
-
-        </UserEditor>
+        @User.Username
     }
 </ModalBody>
 
@@ -25,6 +26,23 @@
     public Guid UserId { get; set; }
     private User? User;
     private bool TaskRunning;
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        Console.WriteLine("OnSetParameter: " + UserId);
+        var response = await Http.PostAsJsonAsync<GenericRequest<Guid>>(
+            "Administration/Users/Get", new GenericRequest<Guid>
+                {
+                    Token = State.User?.Token,
+                    UserId = State.User?.UserId,
+                    Value = UserId
+                });
+
+        User = (await response.Content.ReadFromJsonAsync<GenericRepsonse<User>>()).Value;
+        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(User));
+        StateHasChanged();
+    }
 
     private void Save() 
     {

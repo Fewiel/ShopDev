@@ -14,8 +14,10 @@ public class DefaultDataMigration : Migration
     {
         var defaultAdminRoleId = NewRole("System Admin", "Default admin role");
         var administration_users_list = NewPermission("List Users", "administration_users_list");
+        var administration_users_get = NewPermission("Get User", "administration_users_get");
 
         AddRolePermission(defaultAdminRoleId, administration_users_list);
+        AddRolePermission(defaultAdminRoleId, administration_users_get);
 
         //Add Default User
         var defaultUserId = Guid.NewGuid();

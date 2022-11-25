@@ -14,16 +14,20 @@
     public void Show<T>() 
     {
         CurrentType = typeof(T);
+        StateHasChanged();
     }
 
     public void Show<T>(IDictionary<string, object> parameter)
     {
+        CurrentType = typeof(T);
         Parameter = parameter;
+        StateHasChanged();
     }
 
     public void Hide() 
     {
         CurrentType = null;
+        StateHasChanged();
     }
 
     protected override void OnInitialized()

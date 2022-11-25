@@ -1,10 +1,6 @@
-﻿using Dapper;
-using DapperExtensions;
+﻿using DapperExtensions;
 using ShopDev.DAL.Interfaces;
-using ShopDev.DAL.Models;
-using ShopDev.DAL.Schema;
 using ShopDev.DAL.Utility;
-using System.Text;
 
 namespace ShopDev.DAL.Repositories;
 

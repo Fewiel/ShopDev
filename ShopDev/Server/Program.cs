@@ -7,6 +7,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 #if DEBUG
 var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#; convert zero datetime=True;");
