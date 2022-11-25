@@ -12,77 +12,10 @@ public class DefaultDataMigration : Migration
 
     public override void Up()
     {
-        //Add Default Role, Permissions and Limits
-        var defaultAdminPermissionId = Guid.NewGuid();
-        Insert.IntoTable("Permissions").Row(new Permission
-        {
-            Id = defaultAdminPermissionId,
-            Name = "System Administrator",
-            InternalName = "sys_admin"
-        });
+        var defaultAdminRoleId = NewRole("System Admin", "Default admin role");
+        var administration_users_list = NewPermission("List Users", "administration_users_list");
 
-        var defaultAdminRoleId = Guid.NewGuid();
-        Insert.IntoTable("Roles").Row(new Role
-        {
-            Id = defaultAdminRoleId,
-            Name = "System Admin",
-            Description = "System Administrator - All rights"
-        });
-
-        Insert.IntoTable("Role_Permissions").Row(new RolePermission
-        {
-            RoleId = defaultAdminRoleId,
-            PermissionId = defaultAdminPermissionId
-        });
-
-        var mngUserPermId = Guid.NewGuid();
-        Insert.IntoTable("Permissions").Row(new Permission
-        {
-            Id = mngUserPermId,
-            Name = "Manage Users",
-            InternalName = "manage_users"
-        });
-
-        Insert.IntoTable("Role_Permissions").Row(new RolePermission
-        {
-            RoleId = defaultAdminRoleId,
-            PermissionId = mngUserPermId
-        });
-
-        Insert.IntoTable("Limits").Row(new Limit
-        {
-            Id = Guid.NewGuid(),
-            Name = "Max Environments",
-            InternalName = "environment_max"
-        });
-
-        Insert.IntoTable("Limits").Row(new Limit
-        {
-            Id = Guid.NewGuid(),
-            Name = "Max Permanent Environments",
-            InternalName = "environments_max_perm"
-        });
-
-        Insert.IntoTable("Limits").Row(new Limit
-        {
-            Id = Guid.NewGuid(),
-            Name = "Environment stored after X Days",
-            InternalName = "enviroment_storetime"
-        });
-
-        Insert.IntoTable("Limits").Row(new Limit
-        {
-            Id = Guid.NewGuid(),
-            Name = "Environment deleted after X Days",
-            InternalName = "enviroment_deletetime"
-        });
-
-        Insert.IntoTable("Limits").Row(new Limit
-        {
-            Id = Guid.NewGuid(),
-            Name = "Max Docker Containers",
-            InternalName = "docker_max"
-        });
+        AddRolePermission(defaultAdminRoleId, administration_users_list);
 
         //Add Default User
         var defaultUserId = Guid.NewGuid();
@@ -95,69 +28,38 @@ public class DefaultDataMigration : Migration
             RoleId = defaultAdminRoleId,
             Active = true
         });
-
-        //Add Default Settings
-        Insert.IntoTable("Settings").Row(new Setting
+    }
+    
+    private Guid NewPermission(string name, string internalName)
+    {
+        var guid = Guid.NewGuid();
+        Insert.IntoTable("Permissions").Row(new Permission
         {
-            Id = Guid.NewGuid(),
-            Key = "domain",
-            DisplayName = "Server Domain",
-            Value = "shopdev.local",
-            DisplayType = "text"
+            Id = guid,
+            Name = name,
+            InternalName = internalName
         });
+        return guid;
+    }
 
-        Insert.IntoTable("Settings").Row(new Setting
+    private Guid NewRole(string name, string description)
+    {
+        var guid = Guid.NewGuid();
+        Insert.IntoTable("Roles").Row(new Role
         {
-            Id = Guid.NewGuid(),
-            Key = "smtp_host",
-            DisplayName = "SMTP Hostname",
-            Value = "localhost",
-            DisplayType = "text"
+            Id = guid,
+            Name = name,
+            Description = description
         });
+        return guid;
+    }
 
-        Insert.IntoTable("Settings").Row(new Setting
+    private void AddRolePermission(Guid roleId, Guid permissionId)
+    {
+        Insert.IntoTable("Role_Permissions").Row(new RolePermission
         {
-            Id = Guid.NewGuid(),
-            Key = "smtp_port",
-            DisplayName = "SMTP Port",
-            Value = "25",
-            DisplayType = "text"
-        });
-
-        Insert.IntoTable("Settings").Row(new Setting
-        {
-            Id = Guid.NewGuid(),
-            Key = "smtp_user",
-            DisplayName = "SMTP Username",
-            Value = "",
-            DisplayType = "text"
-        });
-
-        Insert.IntoTable("Settings").Row(new Setting
-        {
-            Id = Guid.NewGuid(),
-            Key = "smtp_mail",
-            DisplayName = "SMTP Mail",
-            Value = "local@shopdev.local",
-            DisplayType = "text"
-        });
-
-        Insert.IntoTable("Settings").Row(new Setting
-        {
-            Id = Guid.NewGuid(),
-            Key = "smtp_password",
-            DisplayName = "SMTP Password",
-            Value = "",
-            DisplayType = "password"
-        });
-
-        Insert.IntoTable("Settings").Row(new Setting
-        {
-            Id = Guid.NewGuid(),
-            Key = "smtp_ssl",
-            DisplayName = "SMTP SSL",
-            Value = "True",
-            DisplayType = "text"
+            RoleId = roleId,
+            PermissionId = permissionId
         });
     }
 }

@@ -18,7 +18,7 @@ public class UsersController : ControllerBase
     }
 
     [HttpPost]
-    [Permission("")]
+    [Permission("administration_users_list")]
     public async Task<GenericRepsonse<List<User>>> GetAll(RequestBase request)
     {
         var users = new List<User>();
@@ -45,9 +45,9 @@ public class UsersController : ControllerBase
         return GenericRepsonse<List<User>>.Ok().WithValue(users);
     }
 
-    //[HttpPost]
-    //public async Task<GenericRepsonse<User>> Get(GenericRequest<Guid> request)
-    //{
+    [HttpPost]
+    public async Task<GenericRepsonse<User>> Get(GenericRequest<Guid> request)
+    {
         
-    //}
+    }
 }

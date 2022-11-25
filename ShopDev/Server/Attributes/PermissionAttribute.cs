@@ -30,9 +30,11 @@ public class PermissionAttribute : ActionFilterAttribute
 
         var usr = await userRepo!.GetByIDAsync(rb.UserId.Value);
 
-        if (await permissionRepo!.HasPermissionAsync(usr, PermissionName))
+        if (!await permissionRepo!.HasPermissionAsync(usr, PermissionName))
         {
             context.Result = new UnauthorizedResult();
         }
+
+        await base.OnActionExecutionAsync(context, next);
     }
 }

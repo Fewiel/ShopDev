@@ -1,21 +1,6 @@
 ﻿@page "/"
 @inject NavigationManager NavManager
-@inject AppState State
-@inject ILocalStorageService Storage
 
 @code {
-    protected override async Task OnInitializedAsync()
-    {
-        if (State.User == null)
-            State.User = await Storage.GetItemAsync<UserState>("User");
-
-        if (State.LoggedIn)
-        {
-            NavManager.NavigateTo("/Home");
-        }
-        else
-        {
-            NavManager.NavigateTo("/Login");
-        }
-    }
+    protected override void OnInitialized() => NavManager.NavigateTo("/Home");
 }

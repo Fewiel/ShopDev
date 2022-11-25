@@ -119,7 +119,7 @@
                     Permissions = result.Permissions,
                     Limits = result.Limits
                 };
-
+            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(State.User));
             if (KeepSignedIn)
             {
                 await Storage.SetItemAsync("User", State.User);
@@ -129,7 +129,8 @@
                 await Storage.RemoveItemAsync("User");
             }
 
-            Nav.NavigateTo("");
+            Nav.NavigateTo(State.NavigationURLAfterAction);
+            State.NavigationURLAfterAction = "/Home";
         }
 
         TaskRunning = false;

@@ -3,13 +3,7 @@
 <div class="navbar-collapse collapse"
      id="navbarSupportedContent"
      data-navbarbg="skin5">
-    <!-- ============================================================== -->
-    <!-- toggle and nav items -->
-    <!-- ============================================================== -->
     <ul class="navbar-nav float-start me-auto">
-        <!-- ============================================================== -->
-        <!-- create new -->
-        <!-- ============================================================== -->
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle"
                href="#"
@@ -34,14 +28,7 @@
             </ul>
         </li>
     </ul>
-    <!-- ============================================================== -->
-    <!-- Right side toggle and nav items -->
-    <!-- ============================================================== -->
     <ul class="navbar-nav float-end">
-
-        <!-- ============================================================== -->
-        <!-- User profile and search -->
-        <!-- ============================================================== -->
         <li class="nav-item dropdown">
             <a class="
                     nav-link
@@ -55,7 +42,7 @@
                role="button"
                data-bs-toggle="dropdown"
                aria-expanded="false">
-               <span>@State.User!.Username</span>
+               <span>@State.User?.Username</span>
             </a>
             <ul class="dropdown-menu dropdown-menu-end user-dd animated"
                 aria-labelledby="navbarDropdown">
@@ -76,8 +63,5 @@
                 </div>
             </ul>
         </li>
-        <!-- ============================================================== -->
-        <!-- User profile and search -->
-        <!-- ============================================================== -->
     </ul>
 </div>
