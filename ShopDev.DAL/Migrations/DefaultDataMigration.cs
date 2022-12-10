@@ -12,12 +12,12 @@ public class DefaultDataMigration : Migration
 
     public override void Up()
     {
-        var defaultAdminRoleId = NewRole("System Admin", "Default admin role");
-        var administration_users_list = NewPermission("List Users", "administration_users_list");
-        var administration_users_get = NewPermission("Get User", "administration_users_get");
+        var defaultUserRoleId = NewRole("Default User", "Default user role");
+        AddRolePermission(defaultUserRoleId, NewPermission("Get Roles", "roles_get"));
 
-        AddRolePermission(defaultAdminRoleId, administration_users_list);
-        AddRolePermission(defaultAdminRoleId, administration_users_get);
+        var defaultAdminRoleId = NewRole("System Admin", "Default admin role", defaultUserRoleId);
+        AddRolePermission(defaultAdminRoleId, NewPermission("List Users", "administration_users_list"));
+        AddRolePermission(defaultAdminRoleId, NewPermission("Get User", "administration_users_get"));
 
         //Add Default User
         var defaultUserId = Guid.NewGuid();
@@ -31,7 +31,7 @@ public class DefaultDataMigration : Migration
             Active = true
         });
     }
-    
+
     private Guid NewPermission(string name, string internalName)
     {
         var guid = Guid.NewGuid();
@@ -44,12 +44,13 @@ public class DefaultDataMigration : Migration
         return guid;
     }
 
-    private Guid NewRole(string name, string description)
+    private Guid NewRole(string name, string description, Guid? parentId = null)
     {
         var guid = Guid.NewGuid();
         Insert.IntoTable("Roles").Row(new Role
         {
             Id = guid,
+            ParentId = parentId,
             Name = name,
             Description = description
         });
@@ -58,7 +59,7 @@ public class DefaultDataMigration : Migration
 
     private void AddRolePermission(Guid roleId, Guid permissionId)
     {
-        Insert.IntoTable("Role_Permissions").Row(new RolePermission
+        Insert.IntoTable("RolePermissions").Row(new RolePermission
         {
             RoleId = roleId,
             PermissionId = permissionId

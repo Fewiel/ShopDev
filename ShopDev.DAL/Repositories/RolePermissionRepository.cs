@@ -16,7 +16,7 @@ public class RolePermissionRepository
     public async Task<IEnumerable<RolePermission>> GetForRoleAsync(long rid)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        return await c.Connection.QueryAsync<RolePermission>("select * from `Role_Permissions` where `RoleId` = @rid", new
+        return await c.Connection.QueryAsync<RolePermission>("select * from `RolePermissions` where `RoleId` = @rid", new
         {
             rid
         });
@@ -25,7 +25,7 @@ public class RolePermissionRepository
     public async Task<RolePermission> GetForRoleAndPermissionAsync(long rid, long pid)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        return await c.Connection.QuerySingleOrDefaultAsync<RolePermission>("select * from `Role_Permissions` where `RoleId` = @rid and `PermissionId` = @pid", new
+        return await c.Connection.QuerySingleOrDefaultAsync<RolePermission>("select * from `RolePermissions` where `RoleId` = @rid and `PermissionId` = @pid", new
         {
             rid,
             pid
@@ -35,7 +35,7 @@ public class RolePermissionRepository
     public async Task AddAsync(RolePermission rp)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("insert into `Role_Permissions` (`RoleId`, `PermissionId`) values (@rid, @pid)", new
+        await c.Connection.ExecuteAsync("insert into `RolePermissions` (`RoleId`, `PermissionId`) values (@rid, @pid)", new
         {
             rid = rp.RoleId,
             pid = rp.PermissionId
@@ -45,7 +45,7 @@ public class RolePermissionRepository
     public async Task RemoveAsync(RolePermission rp)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("delete from `Role_Permissions` where `RoleId` = @rid and `PermissionId` = @pid", new
+        await c.Connection.ExecuteAsync("delete from `RolePermissions` where `RoleId` = @rid and `PermissionId` = @pid", new
         {
             rid = rp.RoleId,
             pid = rp.PermissionId

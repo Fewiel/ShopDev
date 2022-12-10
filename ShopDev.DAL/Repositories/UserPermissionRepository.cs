@@ -16,7 +16,7 @@ public class UserPermissionRepository
     public async Task<IEnumerable<UserPermission>> GetForUserAsync(long id)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        return await c.Connection.QueryAsync<UserPermission>("select * from `User_Permissions` where `UserId` = @id", new
+        return await c.Connection.QueryAsync<UserPermission>("select * from `UserPermissions` where `UserId` = @id", new
         {
             id
         });
@@ -25,7 +25,7 @@ public class UserPermissionRepository
     public async Task AddAsync(UserPermission up)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("insert into `User_Permissions` (`UserId`, `PermissionId`) values (@uid, @pid)", new
+        await c.Connection.ExecuteAsync("insert into `UserPermissions` (`UserId`, `PermissionId`) values (@uid, @pid)", new
         {
             uid = up.UserId,
             pid = up.PermissionId
@@ -35,7 +35,7 @@ public class UserPermissionRepository
     public async Task RemoveAsync(UserPermission up)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("delete from `Users_Permissions` where `UserId` = @uid and `PermissionId` = @pid", new
+        await c.Connection.ExecuteAsync("delete from `UsersPermissions` where `UserId` = @uid and `PermissionId` = @pid", new
         {
             uid = up.UserId,
             pid = up.PermissionId

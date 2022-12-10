@@ -1,5 +1,24 @@
-﻿
+﻿<FormInput Disabled=true
+           LableText="Username:"
+           Value=@User.Username />
+
+<FormInput Disabled=true
+           LableText="Latest use:"
+           Value=@User.LastUsed.ToString() />
+
+<FormSwitch Text="Active" Value=@User.Active />
+<FormSelect Lable="User Group" Selected="User.RoleID" Options="Roles" TValue="Guid" TItem="Role" />
+<FormInput LableText="Full Name" Value=@User.Name />
+<FormInput LableText="SlackID" Value=@User.SlackID />
+<FormInput LableText="E-Mail" Value=@User.Email />
+<FormInput LableText="Absence until (UTC):" Value=@User.AbsenceDate.ToString() Type="datetime-local" />
+<FormInput LableText="Absence reason (short)" Value=@User.AbsenceReason />
+<FormInput LableText="Admin Note (Only visible for Admins)" Value=@User.AdminNote />
+<FormInput LableText="Exiration Date (Leave empty for normal account)" Value=@User.ExpirationDate.ToString() Type="datetime-local" />
 
 @code {
-
+    [Parameter]
+    public User User { get; set; } = null!;
+    [Parameter]
+    public List<Role> Roles { get; set; } = null!;
 }

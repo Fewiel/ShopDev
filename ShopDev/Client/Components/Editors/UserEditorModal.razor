@@ -6,13 +6,13 @@
 <ModalBody>
     @UserId
 
-    @if (User == null)
+    @if (User == null || Roles == null)
     {
         <span>Loading...</span>
     }
     else
     {
-        @User.Username
+        <UserEditor User="User" Roles="Roles"></UserEditor>
     }
 </ModalBody>
 
@@ -25,12 +25,12 @@
     [Parameter]
     public Guid UserId { get; set; }
     private User? User;
+    private List<Role>? Roles;
     private bool TaskRunning;
 
 
     protected override async Task OnParametersSetAsync()
     {
-        Console.WriteLine("OnSetParameter: " + UserId);
         var response = await Http.PostAsJsonAsync<GenericRequest<Guid>>(
             "Administration/Users/Get", new GenericRequest<Guid>
                 {
@@ -38,13 +38,21 @@
                     UserId = State.User?.UserId,
                     Value = UserId
                 });
-
         User = (await response.Content.ReadFromJsonAsync<GenericRepsonse<User>>()).Value;
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(User));
+
+        response = await Http.PostAsJsonAsync<GenericRequest<Guid>>(
+            "Role/GetAll", new GenericRequest<Guid>
+                {
+                    Token = State.User?.Token,
+                    UserId = State.User?.UserId
+                });
+        
+        Roles = (await response.Content.ReadFromJsonAsync<GenericRepsonse<List<Role>>>()).Value;
+
         StateHasChanged();
     }
 
-    private void Save() 
+    private void Save()
     {
         //var response = await Http.PostAsJsonAsync<RequestBase>(
         //    "Administration/Users/Get", new RequestBase
@@ -56,7 +64,7 @@
         //var result = await response.Content.ReadFromJsonAsync<GenericRepsonse<List<User>>>();
     }
 
-    private void Close() 
+    private void Close()
     {
         ModalManager.Instance?.Hide();
     }

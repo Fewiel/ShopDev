@@ -16,7 +16,7 @@ public class UserLimitRepository
     public async Task<IEnumerable<UserLimit>> GetForUserAsync(Guid id)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        return await c.Connection.QueryAsync<UserLimit>("select * from `User_Limits` where `UserId` = @id", new
+        return await c.Connection.QueryAsync<UserLimit>("select * from `UserLimits` where `UserId` = @id", new
         {
             id
         });
@@ -25,7 +25,7 @@ public class UserLimitRepository
     public async Task<UserLimit> GetForUserAndLimitAsync(Guid id, Guid lid)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        return await c.Connection.QuerySingleOrDefaultAsync<UserLimit>("select * from `User_Limits` where `UserId` = @id and `LimitId` = @lid", new
+        return await c.Connection.QuerySingleOrDefaultAsync<UserLimit>("select * from `UserLimits` where `UserId` = @id and `LimitId` = @lid", new
         {
             id,
             lid
@@ -35,7 +35,7 @@ public class UserLimitRepository
     public void Add(UserLimit ul)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        c.Connection.Execute("insert into `Users_Limits` (`UserId`, `LimitId`, `Value`) values (@uid, @lid, @value)", new
+        c.Connection.Execute("insert into `UsersLimits` (`UserId`, `LimitId`, `Value`) values (@uid, @lid, @value)", new
         {
             uid = ul.UserId,
             lid = ul.LimitId,
@@ -46,7 +46,7 @@ public class UserLimitRepository
     public void Update(UserLimit ul)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        c.Connection.Execute("update `User_Limits` set `Value` = @value where `UserId` = @uid and `LimitId` = @lid", new
+        c.Connection.Execute("update `UserLimits` set `Value` = @value where `UserId` = @uid and `LimitId` = @lid", new
         {
             uid = ul.UserId,
             lid = ul.LimitId,
@@ -57,7 +57,7 @@ public class UserLimitRepository
     public void Remove(UserLimit ul)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        c.Connection.Execute("delete from `User_Limits` where `UserId` = @uid and `LimitId` = @lid", new
+        c.Connection.Execute("delete from `UserLimits` where `UserId` = @uid and `LimitId` = @lid", new
         {
             uid = ul.UserId,
             lid = ul.LimitId

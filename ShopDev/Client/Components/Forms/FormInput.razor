@@ -1,4 +1,8 @@
 ﻿<div class="mb-3">
+    @if (LableText != null)
+    {
+        <FormLable Text=@LableText/>        
+    }
     <div class="input-group">
         @if (Icon != null)
         {
@@ -28,6 +32,8 @@
 @code {
     [Parameter]
     public string? Placeholder { get; set; }
+    [Parameter]
+    public string? LableText { get; set; }
     [Parameter]
     public string? Icon { get; set; }
     [Parameter]

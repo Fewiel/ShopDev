@@ -1,0 +1,25 @@
+﻿@typeparam TValue
+@typeparam TItem where TItem : ISelectable<TValue>
+
+
+<div class="mb-3">
+    <FormLable Text=@Lable />
+    <select class="select2 form-select shadow-none select2-hidden-accessible form-control-lg" @bind="Selected">
+        @if (Options != null)
+        {
+            @foreach (var o in Options)
+            {
+                <option value=@o.Value>@o.Text</option>
+            }
+        }
+    </select>
+</div>
+
+@code {
+    [Parameter]
+    public TValue? Selected { get; set; }
+    [Parameter]
+    public List<TItem>? Options { get; set; }
+    [Parameter]
+    public string Lable { get; set; } = null!;
+}

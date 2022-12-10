@@ -13,7 +13,7 @@ public class RoleRepository : RepositoryBase<Role>
     public async Task ClearPermissionsAsync(long id)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("delete from `Role_Permissions` where `RoleId` = @id", new
+        await c.Connection.ExecuteAsync("delete from `RolePermissions` where `RoleId` = @id", new
         {
             id
         });
@@ -22,7 +22,7 @@ public class RoleRepository : RepositoryBase<Role>
     public async Task ClearUserPermissionsAsync(long id)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("delete from `User_Permissions` where `UserId` = @id", new
+        await c.Connection.ExecuteAsync("delete from `UserPermissions` where `UserId` = @id", new
         {
             id
         });
@@ -31,7 +31,7 @@ public class RoleRepository : RepositoryBase<Role>
     public async Task ClearLimitsAsync(long id)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("delete from `Role_Limits` where `RoleId` = @id", new
+        await c.Connection.ExecuteAsync("delete from `RoleLimits` where `RoleId` = @id", new
         {
             id
         });
@@ -40,7 +40,7 @@ public class RoleRepository : RepositoryBase<Role>
     public async Task ClearUserLimitsAsync(long id)
     {
         using var c = new MySQLConnectionWrapper(DB.ConnString);
-        await c.Connection.ExecuteAsync("delete from `User_Limits` where `UserId` = @id", new
+        await c.Connection.ExecuteAsync("delete from `UserLimits` where `UserId` = @id", new
         {
             id
         });

@@ -69,24 +69,25 @@ public class InitialMigration : Migration
 
         Create.Table("Roles")
             .WithColumn("Id").AsGuid()
+            .WithColumn("ParentId").AsGuid().Nullable()
             .WithColumn("Name").AsString()
             .WithColumn("Description").AsString();
 
-        Create.Table("Role_Limits")
+        Create.Table("RoleLimits")
             .WithColumn("RoleId").AsGuid().Indexed()
             .WithColumn("LimitId").AsGuid().Indexed()
             .WithColumn("Value").AsInt32();
 
-        Create.Table("Role_Permissions")
+        Create.Table("RolePermissions")
             .WithColumn("RoleId").AsGuid().Indexed()
             .WithColumn("PermissionId").AsGuid().Indexed();
 
-        Create.Table("User_Limits")
+        Create.Table("UserLimits")
             .WithColumn("UserId").AsGuid()
             .WithColumn("LimitId").AsGuid()
             .WithColumn("Value").AsInt32();
 
-        Create.Table("User_Permissions")
+        Create.Table("UserPermissions")
             .WithColumn("UserId").AsGuid().Indexed()
             .WithColumn("PermissionId").AsGuid().Indexed();
     }
