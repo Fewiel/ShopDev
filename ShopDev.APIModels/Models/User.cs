@@ -12,7 +12,7 @@ public class User : ResponseBase<User>
     public DateTime? ExpirationDate { get; set; }
     public Guid RoleID { get; set; }
     public string? RoleName { get; set; }
-    public DateTime AbsenceDate { get; set; }
+    public DateTime? AbsenceDate { get; set; }
     public string? AbsenceReason { get; set; }
     public string? AdminNote { get; set; }
 }

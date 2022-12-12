@@ -12,7 +12,7 @@
     }
     else
     {
-        <UserEditor User="User" Roles="Roles"></UserEditor>
+        <UserEditor User="User" Roles="Roles" @ref=Editor></UserEditor>
     }
 </ModalBody>
 
@@ -27,6 +27,7 @@
     private User? User;
     private List<Role>? Roles;
     private bool TaskRunning;
+    private UserEditor? Editor;
 
 
     protected override async Task OnParametersSetAsync()
@@ -53,8 +54,9 @@
     }
 
     private async Task SaveAsync()
-    {
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(User));
+    {        
+        Editor!.UpdateUser(User!);
+
         var response = await Http.PostAsJsonAsync<GenericRequest<User>>(
             "Administration/Users/Update", new GenericRequest<User>
                 {

@@ -6,19 +6,42 @@
            LableText="Latest use:"
            Value=@User.LastUsed.ToString() />
 
-<FormSwitch Text="Active" Value=@User.Active />
-<FormSelect Lable="User Group" Selected="User.RoleID" Options="Roles" TValue="Guid" TItem="Role" />
-<FormInput LableText="Full Name" Value=@User.Name />
-<FormInput LableText="SlackID" Value=@User.SlackID />
-<FormInput LableText="E-Mail" Value=@User.Email />
-<FormInput LableText="Absence until (UTC):" Value=@User.AbsenceDate.ToString() Type="datetime-local" />
-<FormInput LableText="Absence reason (short)" Value=@User.AbsenceReason />
-<FormInput LableText="Admin Note (Only visible for Admins)" Value=@User.AdminNote />
-<FormInput LableText="Exiration Date (Leave empty for normal account)" Value=@User.ExpirationDate.ToString() Type="datetime-local" />
+<FormSwitch Text="Active" Value=@User.Active @ref=SwitchActive />
+<FormSelect Lable="User Group" Selected="User.RoleID" Options="Roles" TValue="Guid" TItem="Role" @ref=SelectUserGroup />
+<FormInput LableText="Full Name" Value=@User.Name @ref=InputName />
+<FormInput LableText="SlackID" Value=@User.SlackID @ref=InputSlackId />
+<FormInput LableText="E-Mail" Value=@User.Email @ref=InputEmail />
+<FormInput LableText="Absence until (UTC):" Value=@User.AbsenceDate.ToString() Type="datetime-local" @ref=InputAbsenceDate />
+<FormInput LableText="Absence reason (short)" Value=@User.AbsenceReason @ref=InputAbsenceReason />
+<FormInput LableText="Admin Note (Only visible for Admins)" Value=@User.AdminNote @ref=InputAdminNote />
+<FormInput LableText="Exiration Date (Leave empty for normal account)" Value=@User.ExpirationDate.ToString() Type="datetime-local" @ref=InputExpirationDate />
 
 @code {
     [Parameter]
     public User User { get; set; } = null!;
     [Parameter]
     public List<Role> Roles { get; set; } = null!;
+
+    private FormSwitch? SwitchActive;
+    private FormSelect<Guid, Role>? SelectUserGroup;
+    private FormInput? InputName;
+    private FormInput? InputSlackId;
+    private FormInput? InputEmail;
+    private FormInput? InputAbsenceDate;
+    private FormInput? InputAbsenceReason;
+    private FormInput? InputAdminNote;
+    private FormInput? InputExpirationDate;
+
+    public void UpdateUser(User usr)
+    {
+        usr.Active = SwitchActive!.Value;
+        usr.RoleID = SelectUserGroup!.Selected;
+        usr.Name = InputName?.Value;
+        usr.SlackID = InputSlackId?.Value;
+        usr.Email = InputEmail!.Value;        
+        usr.AbsenceDate = string.IsNullOrEmpty(InputAbsenceDate!.Value) ? null : DateTime.Parse(InputAbsenceDate.Value);
+        usr.AbsenceReason = InputAbsenceReason?.Value;
+        usr.AdminNote = InputAdminNote?.Value;
+        usr.ExpirationDate = string.IsNullOrEmpty(InputExpirationDate!.Value) ? null : DateTime.Parse(InputExpirationDate.Value);
+    }
 }
