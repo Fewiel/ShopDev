@@ -32,25 +32,19 @@ public class DefaultDataMigration : Migration
             Active = true
         });
 
-        Insert.IntoTable("Users").Row(new User
+        var countTestusers = 30;
+        for (int i = 0; i < countTestusers; i++)
         {
-            Id = Guid.NewGuid(),
-            Username = "Testuser1",
-            Email = "admin@shopdev.local",
-            Password = PasswordHasher.Hash("admin"),
-            RoleId = defaultUserRoleId,
-            Active = true
-        });
-
-        Insert.IntoTable("Users").Row(new User
-        {
-            Id = Guid.NewGuid(),
-            Username = "Testuser2",
-            Email = "admin@shopdev.local",
-            Password = PasswordHasher.Hash("admin"),
-            RoleId = defaultUserRoleId,
-            Active = true
-        });
+            Insert.IntoTable("Users").Row(new User
+            {
+                Id = Guid.NewGuid(),
+                Username = $"Testuser{i}",
+                Email = "admin@shopdev.local",
+                Password = PasswordHasher.Hash($"Testuser{i}"),
+                RoleId = defaultUserRoleId,
+                Active = true
+            });
+        }
     }
 
     private Guid NewPermission(string name, string internalName)
