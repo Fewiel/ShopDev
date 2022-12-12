@@ -15,7 +15,7 @@
             {
                 <i class="bi bi-person-fill warning-light"></i>
             }
-            else 
+            else
             {
                 <i class="bi bi-person-fill-slash error-light"></i>
             }
@@ -24,14 +24,13 @@
         <td>@context.Name</td>
         <td>@context.Email</td>
         <td>@context.RoleName</td>
-        <td>        
+        <td>
             @{
                 var id = context.Id;
-                Console.WriteLine(id);
             }
             <a @onclick=@(() => EditUser(id)) style="cursor: pointer;"><i class="bi bi-person-fill-gear" /></a>
-            <i class="bi bi-person-fill-lock"></i>
-            <i class="bi bi-person-fill-x"></i>
+            <a @onclick=@(() => LockUser(id)) style="cursor: pointer;"><i class="bi bi-person-fill-lock"></i></a>
+            <a @onclick=@(() => DeleteUser(id)) style="cursor: pointer;"><i class="bi bi-person-fill-x"></i></a>
         </td>
     </Table>
 }
@@ -54,25 +53,73 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        if (!await CheckLoginNavigateAsync())        
+        if (!await CheckLoginNavigateAsync())
             return;
 
-        Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(State.User));
+        await GetUsers();
+    }
+
+    private void EditUser(Guid userId)
+    {
+        ModalManager.Instance!.Show<UserEditorModal>(new Dictionary<string, object> { { "UserId", userId } });
+    }
+
+    private async Task LockUser(Guid userId)
+    {
+        var response = await Http.PostAsJsonAsync<GenericRequest<Guid>>(
+            "Administration/Users/Lock", new GenericRequest<Guid>
+                {
+                    Token = State.User?.Token,
+                    UserId = State.User?.UserId,
+                    Value = userId
+                });
+
+        await ProcessMessages(response);
+        await GetUsers();
+    }
+
+    private async Task DeleteUser(Guid userId)
+    {
+        var response = await Http.PostAsJsonAsync<GenericRequest<Guid>>(
+            "Administration/Users/Delete", new GenericRequest<Guid>
+                {
+                    Token = State.User?.Token,
+                    UserId = State.User?.UserId,
+                    Value = userId
+                });
+
+        await ProcessMessages(response);
+        await GetUsers();
+    }
+
+    private async Task ProcessMessages(HttpResponseMessage response)
+    {
+        var result = await response.Content.ReadFromJsonAsync<LoginResponseModel>();
+
+        if (result == null)
+        {
+            ToastManager.Instance?.Add("Something went wrong.., Contact your nearest Collegue and try again");
+        }
+        else
+        {
+            foreach (var msg in result.Messages!)
+            {
+                ToastManager.Instance?.Add(msg.Content);
+            }
+        }
+    }
+
+    private async Task GetUsers()
+    {
         var response = await Http.PostAsJsonAsync<RequestBase>(
             "Administration/Users/GetAll", new RequestBase
-            {
-                Token = State.User?.Token,
-                UserId = State.User?.UserId
-            });
+                {
+                    Token = State.User?.Token,
+                    UserId = State.User?.UserId
+                });
 
         var result = await response.Content.ReadFromJsonAsync<GenericRepsonse<List<User>>>();
 
         UserData = new(TableHeaders, result.Value);
-    }
-
-    private void EditUser(Guid userId) 
-    {
-        Console.WriteLine("Edit User: " + userId);
-        ModalManager.Instance!.Show<UserEditorModal>(new Dictionary<string, object> { { "UserId", userId } });
     }
 }

@@ -40,4 +40,22 @@ public class UsersController : ControllerBase
     {
         return GenericRepsonse<User>.Ok().WithValue(_mapper.Map<User>(await _userRepository.GetByIDAsync(request.Value)));
     }
+
+    [HttpPost]
+    [Permission("administration_users_lock")]
+    public async Task<GenericRepsonse<User>> Lock(GenericRequest<Guid> request)
+    {
+        var usr = await _userRepository.GetByIDAsync(request.Value);
+        usr.Active = !usr.Active;
+        await _userRepository.UpdateAsync(usr);
+        return GenericRepsonse<User>.Ok().WithMessage($"User {usr.Username} Active: {usr.Active}", "info");
+    }
+
+    [HttpPost]
+    [Permission("administration_users_delete")]
+    public async Task<GenericRepsonse<User>> Delete(GenericRequest<Guid> request)
+    {
+        await _userRepository.DeleteAsync(await _userRepository.GetByIDAsync(request.Value));
+        return GenericRepsonse<User>.Ok().WithMessage("User deleted", "info");
+    }
 }

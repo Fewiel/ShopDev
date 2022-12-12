@@ -119,7 +119,7 @@
                     Permissions = result.Permissions,
                     Limits = result.Limits
                 };
-            Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(State.User));
+
             if (KeepSignedIn)
             {
                 await Storage.SetItemAsync("User", State.User);

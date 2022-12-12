@@ -18,8 +18,9 @@ public class DefaultDataMigration : Migration
         var defaultAdminRoleId = NewRole("System Admin", "Default admin role", defaultUserRoleId);
         AddRolePermission(defaultAdminRoleId, NewPermission("List Users", "administration_users_list"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Get User", "administration_users_get"));
+        AddRolePermission(defaultAdminRoleId, NewPermission("Lock User", "administration_users_lock"));
+        AddRolePermission(defaultAdminRoleId, NewPermission("Delete User", "administration_users_delete"));
 
-        //Add Default User
         var defaultUserId = Guid.NewGuid();
         Insert.IntoTable("Users").Row(new User
         {
@@ -28,6 +29,26 @@ public class DefaultDataMigration : Migration
             Email = "admin@shopdev.local",
             Password = PasswordHasher.Hash("admin"),
             RoleId = defaultAdminRoleId,
+            Active = true
+        });
+
+        Insert.IntoTable("Users").Row(new User
+        {
+            Id = Guid.NewGuid(),
+            Username = "Testuser1",
+            Email = "admin@shopdev.local",
+            Password = PasswordHasher.Hash("admin"),
+            RoleId = defaultUserRoleId,
+            Active = true
+        });
+
+        Insert.IntoTable("Users").Row(new User
+        {
+            Id = Guid.NewGuid(),
+            Username = "Testuser2",
+            Email = "admin@shopdev.local",
+            Password = PasswordHasher.Hash("admin"),
+            RoleId = defaultUserRoleId,
             Active = true
         });
     }
