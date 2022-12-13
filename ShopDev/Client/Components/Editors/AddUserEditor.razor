@@ -1,0 +1,34 @@
+﻿<FormInput LableText="Username" @ref=InputUsername />
+<FormSwitch Text="Active" Value=true @ref=SwitchActive />
+<FormSelect Lable="User Group" Options="Roles" TValue="Guid" TItem="Role" @ref=SelectUserGroup />
+<FormInput LableText="Full Name" @ref=InputName />
+<FormInput LableText="SlackID" @ref=InputSlackId />
+<FormInput LableText="E-Mail" @ref=InputEmail />
+<FormInput LableText="Admin Note (Only visible for Admins)" @ref=InputAdminNote />
+<FormInput LableText="Exiration Date (Leave empty for normal account)" Type="datetime-local" @ref=InputExpirationDate />
+
+@code {
+    [Parameter]
+    public List<Role> Roles { get; set; } = null!;
+
+    private FormInput? InputUsername;
+    private FormSwitch? SwitchActive;
+    private FormSelect<Guid, Role>? SelectUserGroup;
+    private FormInput? InputName;
+    private FormInput? InputSlackId;
+    private FormInput? InputEmail;
+    private FormInput? InputAdminNote;
+    private FormInput? InputExpirationDate;
+
+    public void AddUser(User usr)
+    {
+        usr.Username = InputUsername!.Value;
+        usr.Active = SwitchActive!.Value;
+        usr.RoleID = SelectUserGroup!.Selected;
+        usr.Name = InputName?.Value;
+        usr.SlackID = InputSlackId?.Value;
+        usr.Email = InputEmail!.Value;
+        usr.AdminNote = InputAdminNote?.Value;
+        usr.ExpirationDate = string.IsNullOrEmpty(InputExpirationDate!.Value) ? null : DateTime.Parse(InputExpirationDate.Value);
+    }
+}

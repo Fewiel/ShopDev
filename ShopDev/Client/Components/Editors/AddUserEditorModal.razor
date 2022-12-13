@@ -1,0 +1,75 @@
+﻿@inject HttpClient Http
+@inject AppState State
+
+<ModalHeader Titel=@(User == null ? "Loading User..." : $"Edit User: {User.Username}") />
+
+<ModalBody>
+    @UserId
+
+    @if (User == null || Roles == null)
+    {
+        <span>Loading...</span>
+    }
+    else
+    {
+        <AddUserEditor Roles="Roles" @ref=Editor></AddUserEditor>
+    }
+</ModalBody>
+
+<ModalFooter>
+    <button type="button" class="btn btn-secondary" @onclick=Close>Close</button>
+    <button type="button" class="btn btn-primary" disabled=@(User == null || TaskRunning) @onclick=SaveAsync>Save</button>
+</ModalFooter>
+
+@code {
+    [Parameter]
+    public Guid UserId { get; set; }
+    private User? User;
+    private List<Role>? Roles;
+    private bool TaskRunning;
+    private AddUserEditor? Editor;
+
+
+
+    protected override async Task OnParametersSetAsync()
+    {
+        User = new User();
+
+        var response = await Http.PostAsJsonAsync<GenericRequest<Guid>>(
+            "Role/GetAll", new GenericRequest<Guid>
+                {
+                    Token = State.User?.Token,
+                    UserId = State.User?.UserId
+                });
+
+        Roles = (await response.Content.ReadFromJsonAsync<GenericRepsonse<List<Role>>>()).Value;
+
+        StateHasChanged();
+    }
+
+    private async Task SaveAsync()
+    {
+        Editor!.AddUser(User!);
+
+        if (string.IsNullOrEmpty(User.Username) || string.IsNullOrEmpty(User.Email))
+        {
+            
+        }
+
+        var response = await Http.PostAsJsonAsync<GenericRequest<User>>(
+            "Administration/Users/Add", new GenericRequest<User>
+                {
+                    Token = State.User?.Token,
+                    UserId = State.User?.UserId,
+                    Value = User
+                });
+
+        ModalManager.Instance?.Hide();
+
+    }
+
+    private void Close()
+    {
+        ModalManager.Instance?.Hide();
+    }
+}

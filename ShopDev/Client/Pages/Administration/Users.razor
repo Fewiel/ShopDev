@@ -65,9 +65,10 @@ else
     {
         ModalManager.Instance!.Show<UserEditorModal>(new Dictionary<string, object> { { "UserId", userId } });
     }
-    
+
     private async Task AddUser()
     {
+        Guid? userId = null;
         ModalManager.Instance!.Show<UserEditorModal>(new Dictionary<string, object> { { "UserId", userId } });
     }
 
