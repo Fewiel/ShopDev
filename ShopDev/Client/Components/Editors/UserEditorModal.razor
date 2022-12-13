@@ -28,6 +28,7 @@
     private List<Role>? Roles;
     private bool TaskRunning;
     private UserEditor? Editor;
+    
 
 
     protected override async Task OnParametersSetAsync()
@@ -54,7 +55,7 @@
     }
 
     private async Task SaveAsync()
-    {        
+    {
         Editor!.UpdateUser(User!);
 
         var response = await Http.PostAsJsonAsync<GenericRequest<User>>(
@@ -64,8 +65,9 @@
                     UserId = State.User?.UserId,
                     Value = User
                 });
-
+        
         ModalManager.Instance?.Hide();
+                
     }
 
     private void Close()

@@ -15,7 +15,7 @@ public class User : IDBIdentifier
     public DateTime LastUsed { get; set; }
     public DateTime? ExpirationDate { get; set; }
     public Guid RoleId { get; set; }
-    public DateTime AbsenceDate { get; set; }
+    public DateTime? AbsenceDate { get; set; }
     public string? AbsenceReason { get; set; }
     public string? AdminNote { get; set; }
 }

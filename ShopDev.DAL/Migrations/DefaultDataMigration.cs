@@ -20,6 +20,7 @@ public class DefaultDataMigration : Migration
         AddRolePermission(defaultAdminRoleId, NewPermission("Get User", "administration_users_get"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Lock User", "administration_users_lock"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Delete User", "administration_users_delete"));
+        AddRolePermission(defaultAdminRoleId, NewPermission("Delete User", "administration_users_update"));
 
         var defaultUserId = Guid.NewGuid();
         Insert.IntoTable("Users").Row(new User
