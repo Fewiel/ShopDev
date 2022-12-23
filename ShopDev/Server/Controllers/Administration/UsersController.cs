@@ -5,6 +5,7 @@ using ShopDev.APIModels.User;
 using ShopDev.DAL.Models;
 using ShopDev.DAL.Repositories;
 using ShopDev.Server.Attributes;
+using ShopDev.Server.Services;
 using ShopDev.Server.Utility;
 
 using User = ShopDev.APIModels.Models.User;
@@ -17,13 +18,17 @@ public class UsersController : ControllerBase
 {
     private readonly UserRepository _userRepository;
     private readonly RoleRepository _roleRepository;
+    private readonly SettingRepository _settings;
     private readonly IMapper _mapper;
+    private readonly IEmailProvider _mailProvider;
 
-    public UsersController(UserRepository userRepository, RoleRepository roleRepository, IMapper mapper)
+    public UsersController(UserRepository userRepository, RoleRepository roleRepository, IMapper mapper, IEmailProvider mailProvider, SettingRepository setting)
     {
         _roleRepository = roleRepository;
         _userRepository = userRepository;
         _mapper = mapper;
+        _mailProvider = mailProvider;
+        _settings = setting;
     }
 
     [HttpPost]
@@ -114,9 +119,17 @@ public class UsersController : ControllerBase
         dbUsr.Id = Guid.NewGuid();
         var password = RandomString.Get(32);
         dbUsr.Password = PasswordHasher.Hash(password);
-        //TODO: Send Mail to user with password
+
+        var message = await _settings.GetByKeyAsync("mail_registration");
+        var interfaceDomain = await _settings.GetByKeyAsync("domain_interface");
+
+        if (message == null || interfaceDomain == null || message.Value == null)
+            return StatusCode(500);
 
         await _userRepository.InsertAsync(dbUsr);
+
+        await _mailProvider.SendMailAsync("New Account created for you!", string.Format(message.Value, interfaceDomain, usr.Username, password), usr.Email);
+
         return Ok(AddUserResponse.Ok().WithMessage($"User {usr.Username} added!", "info"));
     }
 }

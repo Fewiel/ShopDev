@@ -18,9 +18,21 @@ public class DefaultDataMigration : Migration
         var defaultAdminRoleId = NewRole("System Admin", "Default admin role", defaultUserRoleId);
         AddRolePermission(defaultAdminRoleId, NewPermission("List Users", "administration_users_list"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Get User", "administration_users_get"));
+        AddRolePermission(defaultAdminRoleId, NewPermission("Get User", "administration_users_add"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Lock User", "administration_users_lock"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Delete User", "administration_users_delete"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Delete User", "administration_users_update"));
+
+        AddSetting("Interface Domain", "text", "domain_interface", "notset.tld");
+        AddSetting("Registration Mail", "text", "mail_registration",
+            @"A ShopDev account has been created for you!
+
+You can now login to {0} with the following credentials:  
+
+Username: {1}
+Password: {2}
+
+Please remember to change your password after logging in.");
 
         var defaultUserId = Guid.NewGuid();
         Insert.IntoTable("Users").Row(new User
@@ -79,6 +91,18 @@ public class DefaultDataMigration : Migration
         {
             RoleId = roleId,
             PermissionId = permissionId
+        });
+    }
+
+    private void AddSetting(string displayName, string displayType, string key, string value)
+    {
+        Insert.IntoTable("Settings").Row(new Setting
+        {
+            Id = Guid.NewGuid(),
+            DisplayName = displayName,
+            DisplayType = displayType,
+            Key = key,
+            Value = value
         });
     }
 }

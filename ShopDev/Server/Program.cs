@@ -1,5 +1,6 @@
 using ShopDev.DAL.Models;
 using ShopDev.DAL.Repositories;
+using ShopDev.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +11,10 @@ builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 
 #if DEBUG
+builder.Services.AddSingleton(typeof(IEmailProvider), new DebugEmailProvider());
+var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#; convert zero datetime=True;");
+#else
+builder.Services.AddSingleton(typeof(IEmailProvider), new EmailProvider());
 var database = new Database($"server=shopdev.local;database=shopdev;uid=shopdev;pwd=ShopDev2022#; convert zero datetime=True;");
 #endif
 
