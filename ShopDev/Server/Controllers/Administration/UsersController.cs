@@ -39,7 +39,9 @@ public class UsersController : ControllerBase
 
         foreach (var usr in await _userRepository.GetAllAsync())
         {
-            users.Add(_mapper.Map<User>(usr));
+            var mappedUsr = _mapper.Map<User>(usr);
+            mappedUsr.RoleName = (await _roleRepository.GetByIDAsync(usr.RoleId)).Name;
+            users.Add(mappedUsr);
         }
 
         return GenericRepsonse<List<User>>.Ok().WithValue(users);
