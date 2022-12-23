@@ -1,12 +1,10 @@
 ﻿@inject HttpClient Http
 @inject AppState State
 
-<ModalHeader Titel=@(User == null ? "Loading User..." : $"Edit User: {User.Username}") />
+<ModalHeader Titel="Add User" />
 
 <ModalBody>
-    @UserId
-
-    @if (User == null || Roles == null)
+    @if (Roles == null)
     {
         <span>Loading...</span>
     }

@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using ShopDev.APIModels;
-using ShopDev.APIModels.Models;
+using ShopDev.APIModels.User;
+using ShopDev.DAL.Models;
 using ShopDev.DAL.Repositories;
 using ShopDev.Server.Attributes;
+using ShopDev.Server.Utility;
+
+using User = ShopDev.APIModels.Models.User;
 
 namespace ShopDev.Server.Controllers.Administration;
 
@@ -12,10 +16,12 @@ namespace ShopDev.Server.Controllers.Administration;
 public class UsersController : ControllerBase
 {
     private readonly UserRepository _userRepository;
+    private readonly RoleRepository _roleRepository;
     private readonly IMapper _mapper;
 
-    public UsersController(UserRepository userRepository, IMapper mapper)
+    public UsersController(UserRepository userRepository, RoleRepository roleRepository, IMapper mapper)
     {
+        _roleRepository = roleRepository;
         _userRepository = userRepository;
         _mapper = mapper;
     }
@@ -80,5 +86,37 @@ public class UsersController : ControllerBase
 
         await _userRepository.UpdateAsync(usr);
         return GenericRepsonse<Guid>.Ok().WithMessage($"User {usr.Username} updated", "info");
+    }
+
+    [HttpPost]
+    [Permission("administration_users_add")]
+    public async Task<IActionResult> Add(GenericRequest<User> request)
+    {
+        var usr = request.Value;
+
+        if (usr == null)
+            return BadRequest();
+
+        if (string.IsNullOrEmpty(usr.Username))
+            return Ok(AddUserResponse.Fail().WithReason(AddUserResponseReason.MissingUsername));
+
+        if (string.IsNullOrEmpty(usr.Email))
+            return Ok(AddUserResponse.Fail().WithReason(AddUserResponseReason.MissingMail));
+
+        if (usr.RoleID == Guid.Empty || _roleRepository.GetByIDAsync(usr.RoleID) == null)
+            return Ok(AddUserResponse.Fail().WithReason(AddUserResponseReason.MissingRole));
+
+        var dbUsr = _mapper.Map<DAL.Models.User>(usr);
+
+        if (await _userRepository.UserExistsAsync(dbUsr))
+            return Ok(AddUserResponse.Fail().WithReason(AddUserResponseReason.UserExists));
+
+        dbUsr.Id = Guid.NewGuid();
+        var password = RandomString.Get(32);
+        dbUsr.Password = PasswordHasher.Hash(password);
+        //TODO: Send Mail to user with password
+
+        await _userRepository.InsertAsync(dbUsr);
+        return Ok(AddUserResponse.Ok().WithMessage($"User {usr.Username} added!", "info"));
     }
 }
