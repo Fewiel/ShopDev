@@ -9,6 +9,8 @@ public class NodeHost : IHostedService
     private bool Running;
     private int Port;
     private SettingRepository _setting;
+    private Dictionary<Guid, NodeClient> _nodes = new();
+    public IReadOnlyDictionary<Guid, NodeClient> Nodes => _nodes;
 
     public NodeHost(SettingRepository setting)
     {
@@ -26,7 +28,6 @@ public class NodeHost : IHostedService
 
         Port = int.Parse(port.Value);
 
-
         new Thread(Worker).Start();        
     }
 
@@ -38,11 +39,19 @@ public class NodeHost : IHostedService
 
     private void Worker()
     {
-        var server = new TcpListener(IPAddress.Any, );
+        var server = new TcpListener(IPAddress.Any, Port);
 
         while (Running)
         {
+            TcpClient client = server.AcceptTcpClient();
+            NetworkStream ns = client.GetStream();
+
             Thread.Sleep(100);
         }
+    }
+
+    public void OnNodeConnected(NodeClient nodeClient)
+    {
+        
     }
 }

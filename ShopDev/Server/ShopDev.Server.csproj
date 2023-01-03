@@ -16,6 +16,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\ShopDev.APIModels\ShopDev.APIModels.csproj" />
     <ProjectReference Include="..\..\ShopDev.DAL\ShopDev.DAL.csproj" />
+    <ProjectReference Include="..\..\ShopDev.NodeModels\ShopDev.NodeModels.csproj" />
     <ProjectReference Include="..\Client\ShopDev.Client.csproj" />
   </ItemGroup>
 

@@ -23,6 +23,7 @@ public class DefaultDataMigration : Migration
         AddRolePermission(defaultAdminRoleId, NewPermission("Delete User", "administration_users_delete"));
         AddRolePermission(defaultAdminRoleId, NewPermission("Delete User", "administration_users_update"));
 
+        AddSetting("Node Server Port", "text", "node_server_port", "34152");
         AddSetting("Interface Domain", "text", "domain_interface", "notset.tld");
         AddSetting("Registration Mail", "text", "mail_registration",
             @"A ShopDev account has been created for you!

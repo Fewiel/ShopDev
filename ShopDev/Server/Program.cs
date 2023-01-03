@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddSingleton<NodeHost>();
 
 #if DEBUG
 builder.Services.AddSingleton(typeof(IEmailProvider), new DebugEmailProvider());
